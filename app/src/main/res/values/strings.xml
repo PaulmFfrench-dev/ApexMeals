@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FreedomFood-Android</string>
+    <string name="button_addFreedomFood">Add FreedomFood</string>
 </resources>
