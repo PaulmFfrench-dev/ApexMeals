@@ -23,6 +23,7 @@ class FreedomFoodActivity : AppCompatActivity() {
 
         binding.btnAdd.setOnClickListener() {
             freedomfood.title = binding.freedomfoodTitle.text.toString()
+            freedomfood.description = binding.description.text.toString()
             if (freedomfood.title.isNotEmpty()) {
                 freedomfoods.add(freedomfood.copy())
                 i("add Button Pressed: ${freedomfood}")
