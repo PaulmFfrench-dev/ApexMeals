@@ -2,16 +2,56 @@ package org.wit.freedomfood_android.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import org.wit.freedomfood_android.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import org.wit.freedomfood_android.databinding.ActivityFreedomfoodListBinding
+import org.wit.freedomfood_android.databinding.CardFreedomfoodBinding
 import org.wit.freedomfood_android.main.MainApp
+import org.wit.freedomfood_android.models.FreedomFoodModel
 
 class FreedomFoodListActivity : AppCompatActivity() {
 
-    lateinit var app: MainApp
+        lateinit var app: MainApp
+        private lateinit var binding: ActivityFreedomfoodListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_freedom_food_list)
-        app = application as MainApp
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            binding = ActivityFreedomfoodListBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+
+            app = application as MainApp
+
+            val layoutManager = LinearLayoutManager(this)
+            binding.recyclerView.layoutManager = layoutManager
+            binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods)
+        }
     }
-}
+
+    class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodModel>) :
+        RecyclerView.Adapter<FreedomFoodAdapter.MainHolder>() {
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
+            val binding = CardFreedomfoodBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+
+            return MainHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: MainHolder, position: Int) {
+            val freedomfood = freedomfoods[holder.adapterPosition]
+            holder.bind(freedomfood)
+        }
+
+        override fun getItemCount(): Int = freedomfoods.size
+
+        class MainHolder(private val binding : CardFreedomfoodBinding) :
+            RecyclerView.ViewHolder(binding.root) {
+
+            fun bind(freedomfood: FreedomFoodModel) {
+                binding.freedomfoodTitle.text = freedomfood.title
+                binding.description.text = freedomfood.description
+            }
+        }
+    }
