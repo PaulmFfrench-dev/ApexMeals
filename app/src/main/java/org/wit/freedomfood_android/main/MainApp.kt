@@ -13,8 +13,8 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         i("FreedomFood started")
-        freedomfoods.add(FreedomFoodModel("One", "About one..."))
-        freedomfoods.add(FreedomFoodModel("Two", "About two..."))
-        freedomfoods.add(FreedomFoodModel("Three", "About three..."))
+//        freedomfoods.add(FreedomFoodModel("One", "About one..."))
+//        freedomfoods.add(FreedomFoodModel("Two", "About two..."))
+//        freedomfoods.add(FreedomFoodModel("Three", "About three..."))
     }
 }

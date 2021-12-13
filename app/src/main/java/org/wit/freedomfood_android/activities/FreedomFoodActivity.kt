@@ -29,6 +29,8 @@ class FreedomFoodActivity : AppCompatActivity() {
                 i("add Button Pressed: ${freedomfood}")
                 for (i in app.freedomfoods.indices)
                 { i("FreedomFoods[$i]:${this.app.freedomfoods[i]}") }
+                setResult(RESULT_OK)
+                finish()
             }
             else {
                 Snackbar
