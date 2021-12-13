@@ -1,15 +1,17 @@
-package org.wit.freedomfood_android
+package org.wit.freedomfood_android.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import org.wit.freedomfood_android.databinding.ActivityFreedomfoodBinding
+import org.wit.freedomfood_android.models.FreedomFoodModel
 import timber.log.Timber
 import timber.log.Timber.i
 
 class FreedomFoodActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFreedomfoodBinding
+    var freedomfood = FreedomFoodModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +24,9 @@ class FreedomFoodActivity : AppCompatActivity() {
         i("FreedomFood Activity started...")
 
         binding.btnAdd.setOnClickListener() {
-            val placemarkTitle = binding.freedomfoodTitle.text.toString()
-            if (placemarkTitle.isNotEmpty()) {
-                i("add Button Pressed: $placemarkTitle")
+            freedomfood.title = binding.freedomfoodTitle.text.toString()
+            if (freedomfood.title.isNotEmpty()) {
+                i("add Button Pressed: $freedomfood.title")
             }
             else {
                 Snackbar
@@ -32,6 +34,5 @@ class FreedomFoodActivity : AppCompatActivity() {
                     .show()
             }
         }
-
     }
 }

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FreedomFoodAndroid">
         <activity
-            android:name=".FreedomFoodActivity"
+            android:name=".activities.FreedomFoodActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
