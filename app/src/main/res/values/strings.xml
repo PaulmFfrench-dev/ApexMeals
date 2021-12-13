@@ -3,4 +3,5 @@
     <string name="button_addFreedomFood">Add FreedomFood</string>
     <string name="hint_freedomfoodTitle">FreedomFood Title</string>
     <string name="hint_freedomfoodDescription">Description </string>
+    <string name="menu_addFreedomFood">Add</string>
 </resources>

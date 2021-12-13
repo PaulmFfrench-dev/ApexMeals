@@ -3,9 +3,11 @@ package org.wit.freedomfood_android.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.wit.freedomfood_android.R
 import org.wit.freedomfood_android.databinding.ActivityFreedomfoodListBinding
 import org.wit.freedomfood_android.databinding.CardFreedomfoodBinding
 import org.wit.freedomfood_android.main.MainApp
@@ -20,6 +22,8 @@ class FreedomFoodListActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             binding = ActivityFreedomfoodListBinding.inflate(layoutInflater)
             setContentView(binding.root)
+            binding.toolbar.title = title
+            setSupportActionBar(binding.toolbar)
 
             app = application as MainApp
 
@@ -27,6 +31,11 @@ class FreedomFoodListActivity : AppCompatActivity() {
             binding.recyclerView.layoutManager = layoutManager
             binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods)
         }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
     }
 
     class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodModel>) :
