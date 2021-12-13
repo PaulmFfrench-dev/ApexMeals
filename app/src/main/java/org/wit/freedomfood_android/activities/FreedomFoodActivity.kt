@@ -12,21 +12,22 @@ class FreedomFoodActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFreedomfoodBinding
     var freedomfood = FreedomFoodModel()
+    val freedomfoods = ArrayList<FreedomFoodModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityFreedomfoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         Timber.plant(Timber.DebugTree())
-
         i("FreedomFood Activity started...")
 
         binding.btnAdd.setOnClickListener() {
             freedomfood.title = binding.freedomfoodTitle.text.toString()
             if (freedomfood.title.isNotEmpty()) {
-                i("add Button Pressed: $freedomfood.title")
+                freedomfoods.add(freedomfood.copy())
+                i("add Button Pressed: ${freedomfood}")
+                for (i in freedomfoods.indices)
+                { i("FreedomFoods[$i]:${this.freedomfoods[i]}") }
             }
             else {
                 Snackbar
