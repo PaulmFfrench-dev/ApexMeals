@@ -2,7 +2,10 @@ package org.wit.freedomfood_android.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.snackbar.Snackbar
+import org.wit.freedomfood_android.R
 import org.wit.freedomfood_android.databinding.ActivityFreedomfoodBinding
 import org.wit.freedomfood_android.main.MainApp
 import org.wit.freedomfood_android.models.FreedomFoodModel
@@ -18,6 +21,9 @@ class FreedomFoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFreedomfoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
         i("FreedomFood Activity started...")
@@ -38,5 +44,19 @@ class FreedomFoodActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_freedomfood, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
