@@ -69,6 +69,10 @@ class FreedomFoodActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
 
+        binding.freedomfoodLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
+
         registerImagePickerCallback()
     }
 
