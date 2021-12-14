@@ -20,6 +20,7 @@ import timber.log.Timber.i
 class FreedomFoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFreedomfoodBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var freedomfood = FreedomFoodModel()
     lateinit var app : MainApp
 
@@ -70,10 +71,12 @@ class FreedomFoodActivity : AppCompatActivity() {
         }
 
         binding.freedomfoodLocation.setOnClickListener {
-            i ("Set Location Pressed")
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
         }
 
         registerImagePickerCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -108,5 +111,11 @@ class FreedomFoodActivity : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
     }
 }
