@@ -57,5 +57,4 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
         binding.recyclerView.adapter?.notifyDataSetChanged()
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 }

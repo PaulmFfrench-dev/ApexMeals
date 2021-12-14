@@ -22,25 +22,6 @@ class FreedomFoodActivity : AppCompatActivity() {
     var freedomfood = FreedomFoodModel()
     lateinit var app : MainApp
 
-    private fun registerImagePickerCallback() {
-        imageIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when(result.resultCode){
-                    RESULT_OK -> {
-                        if (result.data != null) {
-                            i("Got Result ${result.data!!.data}")
-                            freedomfood.image = result.data!!.data!!
-                            Picasso.get()
-                                .load(freedomfood.image)
-                                .into(binding.placemarkImage)
-                        } // end of if
-                    }
-                    RESULT_CANCELED -> { } else -> { }
-                }
-            }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var edit = false
@@ -57,6 +38,9 @@ class FreedomFoodActivity : AppCompatActivity() {
             binding.freedomfoodTitle.setText(freedomfood.title)
             binding.description.setText(freedomfood.description)
             binding.btnAdd.setText(R.string.save_freedomfood)
+            Picasso.get()
+                .load(freedomfood.image)
+                .into(binding.freedomfoodImage)
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -80,6 +64,8 @@ class FreedomFoodActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
+
+        registerImagePickerCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -94,5 +80,24 @@ class FreedomFoodActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                            freedomfood.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(freedomfood.image)
+                                .into(binding.freedomfoodImage)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 }
