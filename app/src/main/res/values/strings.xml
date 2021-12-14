@@ -5,4 +5,5 @@
     <string name="hint_freedomfoodDescription">Description </string>
     <string name="menu_addFreedomFood">Add</string>
     <string name="menu_cancelFreedomFood">Cancel</string>
+    <string name="enter_freedomfood_title"> Please enter a FreedomFood Title </string>
 </resources>

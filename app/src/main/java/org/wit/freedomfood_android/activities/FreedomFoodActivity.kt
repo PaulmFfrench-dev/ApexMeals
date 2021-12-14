@@ -41,7 +41,7 @@ class FreedomFoodActivity : AppCompatActivity() {
             }
             else {
                 Snackbar
-                    .make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
+                    .make(it,R.string.enter_freedomfood_title, Snackbar.LENGTH_LONG)
                     .show()
             }
         }

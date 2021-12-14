@@ -8,7 +8,7 @@ internal fun getId(): Long {
     return lastId++
 }
 
-class FreedomFoodMemStore {
+class FreedomFoodMemStore : FreedomFoodStore {
 
     val freedomfoods = ArrayList<FreedomFoodModel>()
 
