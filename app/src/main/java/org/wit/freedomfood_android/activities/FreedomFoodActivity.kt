@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import org.wit.freedomfood_android.R
 import org.wit.freedomfood_android.databinding.ActivityFreedomfoodBinding
 import org.wit.freedomfood_android.helpers.showImagePicker
@@ -29,6 +30,10 @@ class FreedomFoodActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
+                            freedomfood.image = result.data!!.data!!
+                            Picasso.get()
+                                .load(freedomfood.image)
+                                .into(binding.placemarkImage)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
