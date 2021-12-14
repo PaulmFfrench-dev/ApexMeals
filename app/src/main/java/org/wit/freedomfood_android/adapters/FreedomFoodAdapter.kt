@@ -3,6 +3,7 @@ package org.wit.freedomfood_android.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import org.wit.freedomfood_android.databinding.CardFreedomfoodBinding
 import org.wit.freedomfood_android.models.FreedomFoodModel
 
@@ -33,6 +34,7 @@ class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodM
         fun bind(freedomfood: FreedomFoodModel, listener: FreedomFoodListener) {
             binding.freedomfoodTitle.text = freedomfood.title
             binding.description.text = freedomfood.description
+            Picasso.get().load(freedomfood.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onFreedomFoodClick(freedomfood) }
         }
     }
