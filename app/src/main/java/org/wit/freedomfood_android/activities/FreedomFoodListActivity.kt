@@ -27,7 +27,8 @@ class FreedomFoodListActivity : AppCompatActivity() {
 
             val layoutManager = LinearLayoutManager(this)
             binding.recyclerView.layoutManager = layoutManager
-            binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods)
+            //binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods)
+            binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods.findAll())
         }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

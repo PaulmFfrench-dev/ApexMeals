@@ -31,10 +31,7 @@ class FreedomFoodActivity : AppCompatActivity() {
             freedomfood.title = binding.freedomfoodTitle.text.toString()
             freedomfood.description = binding.description.text.toString()
             if (freedomfood.title.isNotEmpty()) {
-                app.freedomfoods.add(freedomfood.copy())
-                i("add Button Pressed: ${freedomfood}")
-                for (i in app.freedomfoods.indices)
-                { i("FreedomFoods[$i]:${this.app.freedomfoods[i]}") }
+                app.freedomfoods.create(freedomfood.copy())
                 setResult(RESULT_OK)
                 finish()
             }
