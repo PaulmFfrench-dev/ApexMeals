@@ -15,17 +15,13 @@ import org.wit.freedomfood_android.databinding.ActivityMapBinding
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-private lateinit var binding: ActivityMapBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-     binding = ActivityMapBinding.inflate(layoutInflater)
-     setContentView(binding.root)
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        setContentView(R.layout.activity_map)
         val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
+            .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
@@ -40,10 +36,8 @@ private lateinit var binding: ActivityMapBinding
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val wit = LatLng(52.245696, -7.139102)
+        mMap.addMarker(MarkerOptions().position(wit).title("Marker in Waterford"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wit, 16f))
     }
 }
