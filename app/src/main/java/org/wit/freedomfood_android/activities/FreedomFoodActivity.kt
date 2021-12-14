@@ -47,8 +47,13 @@ class FreedomFoodActivity : AppCompatActivity() {
                     app.freedomfoods.create(freedomfood.copy())
                 }
             }
+            i("add Button Pressed: $freedomfood")
             setResult(RESULT_OK)
             finish()
+        }
+
+        binding.chooseImage.setOnClickListener {
+            i("Select image")
         }
     }
 
