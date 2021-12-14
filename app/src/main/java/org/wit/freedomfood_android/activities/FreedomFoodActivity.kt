@@ -18,6 +18,7 @@ class FreedomFoodActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var edit = false
         binding = ActivityFreedomfoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
@@ -26,6 +27,7 @@ class FreedomFoodActivity : AppCompatActivity() {
         i("FreedomFood Activity started...")
 
         if (intent.hasExtra("freedomfood_edit")) {
+            edit = true
             freedomfood = intent.extras?.getParcelable("freedomfood_edit")!!
             binding.freedomfoodTitle.setText(freedomfood.title)
             binding.description.setText(freedomfood.description)
@@ -35,16 +37,18 @@ class FreedomFoodActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener() {
             freedomfood.title = binding.freedomfoodTitle.text.toString()
             freedomfood.description = binding.description.text.toString()
-            if (freedomfood.title.isNotEmpty()) {
-                app.freedomfoods.create(freedomfood.copy())
-                setResult(RESULT_OK)
-                finish()
-            }
-            else {
-                Snackbar
-                    .make(it,R.string.enter_freedomfood_title, Snackbar.LENGTH_LONG)
+            if (freedomfood.title.isEmpty()) {
+                Snackbar.make(it,R.string.enter_freedomfood_title, Snackbar.LENGTH_LONG)
                     .show()
+            } else {
+                if (edit) {
+                    app.freedomfoods.update(freedomfood.copy())
+                } else {
+                    app.freedomfoods.create(freedomfood.copy())
+                }
             }
+            setResult(RESULT_OK)
+            finish()
         }
     }
 
