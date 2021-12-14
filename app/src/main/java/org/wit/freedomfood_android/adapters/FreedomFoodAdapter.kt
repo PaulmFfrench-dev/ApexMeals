@@ -6,7 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wit.freedomfood_android.databinding.CardFreedomfoodBinding
 import org.wit.freedomfood_android.models.FreedomFoodModel
 
-class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodModel>) :
+interface FreedomFoodListener {
+    fun onFreedomFoodClick(freedomfood: FreedomFoodModel)
+}
+
+class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodModel>,
+                                     private val listener: FreedomFoodListener) :
     RecyclerView.Adapter<FreedomFoodAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -17,7 +22,7 @@ class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodM
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val freedomfood = freedomfoods[holder.adapterPosition]
-        holder.bind(freedomfood)
+        holder.bind(freedomfood, listener)
     }
 
     override fun getItemCount(): Int = freedomfoods.size
@@ -25,9 +30,10 @@ class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodM
     class MainHolder(private val binding : CardFreedomfoodBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(freedomfood: FreedomFoodModel) {
+        fun bind(freedomfood: FreedomFoodModel, listener: FreedomFoodListener) {
             binding.freedomfoodTitle.text = freedomfood.title
             binding.description.text = freedomfood.description
+            binding.root.setOnClickListener { listener.onFreedomFoodClick(freedomfood) }
         }
     }
 }

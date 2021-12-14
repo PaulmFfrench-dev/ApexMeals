@@ -8,33 +8,34 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.freedomfood_android.R
 import org.wit.freedomfood_android.adapters.FreedomFoodAdapter
+import org.wit.freedomfood_android.adapters.FreedomFoodListener
 import org.wit.freedomfood_android.databinding.ActivityFreedomfoodListBinding
 import org.wit.freedomfood_android.main.MainApp
+import org.wit.freedomfood_android.models.FreedomFoodModel
 
-class FreedomFoodListActivity : AppCompatActivity() {
+class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
 
-        lateinit var app: MainApp
-        private lateinit var binding: ActivityFreedomfoodListBinding
+    lateinit var app: MainApp
+    private lateinit var binding: ActivityFreedomfoodListBinding
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            binding = ActivityFreedomfoodListBinding.inflate(layoutInflater)
-            setContentView(binding.root)
-            binding.toolbar.title = title
-            setSupportActionBar(binding.toolbar)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityFreedomfoodListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
 
-            app = application as MainApp
+        app = application as MainApp
 
-            val layoutManager = LinearLayoutManager(this)
-            binding.recyclerView.layoutManager = layoutManager
-            //binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods)
-            binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods.findAll())
-        }
+        val layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods.findAll(),this)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
-        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -44,6 +45,11 @@ class FreedomFoodListActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-        }
-
     }
+
+    override fun onFreedomFoodClick(freedomFoodModel: FreedomFoodModel) {
+        val launcherIntent = Intent(this, FreedomFoodActivity::class.java)
+        startActivityForResult(launcherIntent,0)
+    }
+
+}
