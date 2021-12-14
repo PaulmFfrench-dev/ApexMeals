@@ -27,6 +27,7 @@ class FreedomFoodMemStore : FreedomFoodStore {
         if (foundFreedomFood != null) {
             foundFreedomFood.title = freedomfood.title
             foundFreedomFood.description = freedomfood.description
+            foundFreedomFood.image = freedomfood.image
             logAll()
         }
     }
