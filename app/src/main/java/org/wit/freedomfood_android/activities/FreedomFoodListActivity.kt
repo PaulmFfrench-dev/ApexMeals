@@ -20,6 +20,7 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityFreedomfoodListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +33,10 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        loadFreedomFoods()
 
+        loadFreedomFoods()
         registerRefreshCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -47,6 +49,10 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, FreedomFoodActivity::class.java)
                 refreshIntentLauncher.launch(launcherIntent)
+            }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, FreedomFoodMapsActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -62,6 +68,12 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { loadFreedomFoods() }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {  }
     }
 
     private fun loadFreedomFoods() {

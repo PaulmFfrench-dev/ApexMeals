@@ -41,7 +41,22 @@ class FreedomFoodJSONStore(private val context: Context) : FreedomFoodStore {
     }
 
     override fun update(freedomfood: FreedomFoodModel) {
-        // todo
+        val freedomfoodList = findAll() as ArrayList<FreedomFoodModel>
+        var foundFreedomFood: FreedomFoodModel? = freedomfoodList.find { p -> p.id == freedomfood.id }
+        if (foundFreedomFood != null) {
+            foundFreedomFood.title = freedomfood.title
+            foundFreedomFood.description = freedomfood.description
+            foundFreedomFood.image = freedomfood.image
+            foundFreedomFood.lat = freedomfood.lat
+            foundFreedomFood.lng = freedomfood.lng
+            foundFreedomFood.zoom = freedomfood.zoom
+        }
+        serialize()
+    }
+
+    override fun delete(freedomfood: FreedomFoodModel) {
+        freedomfoods.remove(freedomfood)
+        serialize()
     }
 
     private fun serialize() {

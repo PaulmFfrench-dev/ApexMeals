@@ -31,5 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.FreedomFoodActivity" />
+        <activity android:name=".activities.FreedomFoodMapsActivity"
+            android:label="@string/title_activity_freedomfood_maps" />
     </application>
 </manifest>

@@ -1,6 +1,7 @@
 package org.wit.freedomfood_android.main
 
 import android.app.Application
+import org.wit.freedomfood_android.models.FreedomFoodJSONStore
 import org.wit.freedomfood_android.models.FreedomFoodMemStore
 import org.wit.freedomfood_android.models.FreedomFoodStore
 import timber.log.Timber
@@ -13,7 +14,7 @@ class MainApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        freedomfoods = FreedomFoodMemStore()
+        freedomfoods = FreedomFoodJSONStore(applicationContext)
         i("FreedomFood started")
     }
 }
