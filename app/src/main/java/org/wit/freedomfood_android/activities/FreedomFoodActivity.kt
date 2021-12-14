@@ -1,6 +1,7 @@
 package org.wit.freedomfood_android.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -41,6 +42,9 @@ class FreedomFoodActivity : AppCompatActivity() {
             Picasso.get()
                 .load(freedomfood.image)
                 .into(binding.freedomfoodImage)
+            if (freedomfood.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_freedomfood_image)
+            }
         }
 
         binding.btnAdd.setOnClickListener() {
@@ -94,7 +98,8 @@ class FreedomFoodActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(freedomfood.image)
                                 .into(binding.freedomfoodImage)
-                        } // end of if
+                            binding.chooseImage.setText(R.string.change_freedomfood_image)
+                        }
                     }
                     RESULT_CANCELED -> { } else -> { }
                 }
