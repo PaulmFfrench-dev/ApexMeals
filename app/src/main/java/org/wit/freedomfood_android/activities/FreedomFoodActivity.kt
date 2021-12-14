@@ -15,6 +15,7 @@ import org.wit.freedomfood_android.databinding.ActivityFreedomfoodBinding
 import org.wit.freedomfood_android.helpers.showImagePicker
 import org.wit.freedomfood_android.main.MainApp
 import org.wit.freedomfood_android.models.FreedomFoodModel
+import org.wit.freedomfood_android.models.Location
 import timber.log.Timber.i
 
 class FreedomFoodActivity : AppCompatActivity() {
@@ -71,7 +72,9 @@ class FreedomFoodActivity : AppCompatActivity() {
         }
 
         binding.freedomfoodLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
 

@@ -11,15 +11,17 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import org.wit.freedomfood_android.R
 import org.wit.freedomfood_android.databinding.ActivityMapBinding
+import org.wit.freedomfood_android.models.Location
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var map: GoogleMap
+    var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_map)
+        location = intent.extras?.getParcelable<Location>("location")!!
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -35,9 +37,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        val wit = LatLng(52.245696, -7.139102)
-        mMap.addMarker(MarkerOptions().position(wit).title("Marker in Waterford"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wit, 16f))
+        map = googleMap
+        val loc = LatLng(location.lat, location.lng)
+        val options = MarkerOptions()
+            .title("FreedomFood")
+            .snippet("GPS : $loc")
+            .draggable(true)
+            .position(loc)
+        map.addMarker(options)
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
 }
