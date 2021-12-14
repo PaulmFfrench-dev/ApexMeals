@@ -28,6 +28,9 @@ class FreedomFoodMemStore : FreedomFoodStore {
             foundFreedomFood.title = freedomfood.title
             foundFreedomFood.description = freedomfood.description
             foundFreedomFood.image = freedomfood.image
+            foundFreedomFood.lat = freedomfood.lat
+            foundFreedomFood.lng = freedomfood.lng
+            foundFreedomFood.zoom = freedomfood.zoom
             logAll()
         }
     }

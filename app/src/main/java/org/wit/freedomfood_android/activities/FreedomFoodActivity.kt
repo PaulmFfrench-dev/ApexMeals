@@ -24,7 +24,7 @@ class FreedomFoodActivity : AppCompatActivity() {
     lateinit var app : MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var location = Location(52.245696, -7.139102, 15f)
+    //var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +73,12 @@ class FreedomFoodActivity : AppCompatActivity() {
         }
 
         binding.freedomfoodLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (freedomfood.zoom != 0f) {
+                location.lat =  freedomfood.lat
+                location.lng = freedomfood.lng
+                location.zoom = freedomfood.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -124,8 +130,11 @@ class FreedomFoodActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            location = result.data!!.extras?.getParcelable("location")!!
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            freedomfood.lat = location.lat
+                            freedomfood.lng = location.lng
+                            freedomfood.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
