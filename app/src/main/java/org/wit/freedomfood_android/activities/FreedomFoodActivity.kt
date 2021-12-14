@@ -29,6 +29,7 @@ class FreedomFoodActivity : AppCompatActivity() {
             freedomfood = intent.extras?.getParcelable("freedomfood_edit")!!
             binding.freedomfoodTitle.setText(freedomfood.title)
             binding.description.setText(freedomfood.description)
+            binding.btnAdd.setText(R.string.save_freedomfood)
         }
 
         binding.btnAdd.setOnClickListener() {
