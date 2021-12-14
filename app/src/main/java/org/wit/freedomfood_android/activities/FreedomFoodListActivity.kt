@@ -47,8 +47,9 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onFreedomFoodClick(freedomFoodModel: FreedomFoodModel) {
+    override fun onFreedomFoodClick(freedomfood: FreedomFoodModel) {
         val launcherIntent = Intent(this, FreedomFoodActivity::class.java)
+        launcherIntent.putExtra("freedomfood_edit", freedomfood)
         startActivityForResult(launcherIntent,0)
     }
 

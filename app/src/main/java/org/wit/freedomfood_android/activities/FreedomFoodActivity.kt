@@ -12,7 +12,6 @@ import org.wit.freedomfood_android.models.FreedomFoodModel
 import timber.log.Timber.i
 
 class FreedomFoodActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityFreedomfoodBinding
     var freedomfood = FreedomFoodModel()
     lateinit var app : MainApp
@@ -21,12 +20,17 @@ class FreedomFoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityFreedomfoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
-
         app = application as MainApp
         i("FreedomFood Activity started...")
+
+        if (intent.hasExtra("freedomfood_edit")) {
+            freedomfood = intent.extras?.getParcelable("freedomfood_edit")!!
+            binding.freedomfoodTitle.setText(freedomfood.title)
+            binding.description.setText(freedomfood.description)
+        }
+
         binding.btnAdd.setOnClickListener() {
             freedomfood.title = binding.freedomfoodTitle.text.toString()
             freedomfood.description = binding.description.text.toString()
