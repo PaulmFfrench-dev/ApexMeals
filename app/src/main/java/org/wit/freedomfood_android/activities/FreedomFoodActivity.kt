@@ -1,20 +1,40 @@
 package org.wit.freedomfood_android.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
 import org.wit.freedomfood_android.R
 import org.wit.freedomfood_android.databinding.ActivityFreedomfoodBinding
+import org.wit.freedomfood_android.helpers.showImagePicker
 import org.wit.freedomfood_android.main.MainApp
 import org.wit.freedomfood_android.models.FreedomFoodModel
 import timber.log.Timber.i
 
 class FreedomFoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFreedomfoodBinding
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     var freedomfood = FreedomFoodModel()
     lateinit var app : MainApp
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +73,7 @@ class FreedomFoodActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-            i("Select image")
+            showImagePicker(imageIntentLauncher)
         }
     }
 
