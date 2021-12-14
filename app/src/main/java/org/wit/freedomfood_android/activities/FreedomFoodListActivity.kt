@@ -32,7 +32,7 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoods.findAll(),this)
+        loadFreedomFoods()
 
         registerRefreshCallback()
     }
@@ -61,6 +61,15 @@ class FreedomFoodListActivity : AppCompatActivity(), FreedomFoodListener {
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { loadFreedomFoods() }
+    }
+
+    private fun loadFreedomFoods() {
+        showFreedomFoodss(app.freedomfoods.findAll())
+    }
+
+    fun showFreedomFoodss (freedomfoods: List<FreedomFoodModel>) {
+        binding.recyclerView.adapter = FreedomFoodAdapter(freedomfoods, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }
