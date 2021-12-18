@@ -52,7 +52,7 @@ class FreedomFoodActivity : AppCompatActivity() {
                 binding.chooseImage.setText(R.string.change_freedomfood_image)
             }
         }
-        
+
         binding.btnAdd.setOnClickListener() {
             freedomfood.title = binding.restaurantname.text.toString()
             freedomfood.description = binding.description.text.toString()

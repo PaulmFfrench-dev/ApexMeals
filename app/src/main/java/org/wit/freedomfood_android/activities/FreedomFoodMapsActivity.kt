@@ -47,6 +47,7 @@ class FreedomFoodMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickList
 
     override fun onMarkerClick(marker: Marker): Boolean {
         contentBinding.currentTitle.text = marker.title
+
         return false
     }
 

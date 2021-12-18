@@ -23,8 +23,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="356dp"
-        android:layout_height="127dp"
+        android:layout_width="362dp"
+        android:layout_height="175dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
@@ -33,44 +33,57 @@
         app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/currentAllergens"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:text="@string/freedomfood_allergens_placeholder"
+            android:translationX="10dp"
+            android:translationY="100dp" />
 
-            <ImageView
-                android:id="@+id/currentImage"
-                android:layout_width="121dp"
-                android:layout_height="98dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@tools:sample/backgrounds/scenic"
-                android:contentDescription="@string/freedomfood_image_placeholder" />
+        <ImageView
+            android:id="@+id/currentImage"
+            android:layout_width="121dp"
+            android:layout_height="98dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="@string/freedomfood_image_placeholder"
+            android:translationX="224dp"
+            android:translationY="10dp"
+            app:srcCompat="@mipmap/ic_launcher" />
 
-            <TextView
-                android:id="@+id/currentTitle"
-                android:layout_width="175dp"
-                android:layout_height="21dp"
-                android:text="@string/freedomfood_title_placeholder"
-                app:layout_constraintBottom_toTopOf="@+id/currentDescription"
-                app:layout_constraintEnd_toStartOf="@+id/currentImage"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.722" />
+        <TextView
+            android:id="@+id/currentTitle"
+            android:layout_width="175dp"
+            android:layout_height="21dp"
+            android:text="@string/freedomfood_title_placeholder"
+            android:translationX="10dp"
+            android:translationY="10dp" />
 
-            <TextView
-                android:id="@+id/currentDescription"
-                android:layout_width="173dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="24dp"
-                android:text="@string/freedomfood_description_placeholder"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/currentImage"
-                app:layout_constraintHorizontal_bias="0.521"
-                app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:id="@+id/currentDescription"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="152dp"
+            android:text="@string/freedomfood_description_placeholder"
+            android:translationX="10dp"
+            android:translationY="40dp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/currentMeal"
+            android:layout_width="173dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/freedomfood_meal_placeholder"
+            android:translationX="10dp"
+            android:translationY="70dp" />
+
+        <TextView
+            android:id="@+id/currentRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/freedomfood_rating_placeholder"
+            android:translationX="260dp"
+            android:translationY="115dp" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

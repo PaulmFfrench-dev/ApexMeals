@@ -20,4 +20,7 @@
     <string name="freedomfood_image_placeholder">FreedomFood Image</string>
     <string name="freedomfood_title_placeholder">Restaurant name</string>
     <string name="freedomfood_description_placeholder">Restaurant Description</string>
+    <string name="freedomfood_rating_placeholder">Rating</string>
+    <string name="freedomfood_meal_placeholder">Meal name</string>
+    <string name="freedomfood_allergens_placeholder">Allergen Free?</string>
 </resources>
