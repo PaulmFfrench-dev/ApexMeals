@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FreedomFood-Android</string>
+    <string name="app_name">FreedomFood</string>
     <string name="button_addFreedomFood">Add a Restaurant</string>
     <string name="hint_freedomfoodTitle">Restaurant name</string>
     <string name="hint_freedomfoodDescription">Restaurant Description</string>
