@@ -46,6 +46,9 @@ class FreedomFoodJSONStore(private val context: Context) : FreedomFoodStore {
         if (foundFreedomFood != null) {
             foundFreedomFood.title = freedomfood.title
             foundFreedomFood.description = freedomfood.description
+            foundFreedomFood.rating = freedomfood.rating
+            foundFreedomFood.meal = freedomfood.meal
+            foundFreedomFood.allergen = freedomfood.allergen
             foundFreedomFood.image = freedomfood.image
             foundFreedomFood.lat = freedomfood.lat
             foundFreedomFood.lng = freedomfood.lng

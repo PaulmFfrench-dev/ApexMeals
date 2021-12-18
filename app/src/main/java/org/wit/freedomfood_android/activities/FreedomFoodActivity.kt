@@ -39,8 +39,11 @@ class FreedomFoodActivity : AppCompatActivity() {
         if (intent.hasExtra("freedomfood_edit")) {
             edit = true
             freedomfood = intent.extras?.getParcelable("freedomfood_edit")!!
-            binding.freedomfoodTitle.setText(freedomfood.title)
+            binding.restaurantname.setText(freedomfood.title)
             binding.description.setText(freedomfood.description)
+            binding.rating.setText(freedomfood.rating.toString())
+            binding.meal.setText(freedomfood.meal)
+            binding.allergy.setText(freedomfood.allergen)
             binding.btnAdd.setText(R.string.save_freedomfood)
             Picasso.get()
                 .load(freedomfood.image)
@@ -49,10 +52,13 @@ class FreedomFoodActivity : AppCompatActivity() {
                 binding.chooseImage.setText(R.string.change_freedomfood_image)
             }
         }
-
+        
         binding.btnAdd.setOnClickListener() {
-            freedomfood.title = binding.freedomfoodTitle.text.toString()
+            freedomfood.title = binding.restaurantname.text.toString()
             freedomfood.description = binding.description.text.toString()
+            freedomfood.rating = binding.rating.text.toString().toInt()
+            freedomfood.meal = binding.meal.text.toString()
+            freedomfood.allergen = binding.allergy.text.toString()
             if (freedomfood.title.isEmpty()) {
                 Snackbar.make(it,R.string.enter_freedomfood_title, Snackbar.LENGTH_LONG)
                     .show()

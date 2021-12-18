@@ -32,8 +32,11 @@ class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodM
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(freedomfood: FreedomFoodModel, listener: FreedomFoodListener) {
-            binding.freedomfoodTitle.text = freedomfood.title
+            binding.restaurantname.text = freedomfood.title
             binding.description.text = freedomfood.description
+            binding.rating.text = freedomfood.rating.toString()
+            binding.meal.text = freedomfood.meal
+            binding.allergy.text = freedomfood.allergen
             Picasso.get().load(freedomfood.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onFreedomFoodClick(freedomfood) }
         }
