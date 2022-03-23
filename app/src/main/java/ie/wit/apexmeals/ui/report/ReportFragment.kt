@@ -2,26 +2,31 @@ package ie.wit.apexmeals.ui.report
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.adapters.ApexMealsAdapter
+import ie.wit.apexmeals.adapters.DonationClickListener
 import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.ui.detail.DonationDetailFragmentArgs
 
-class ReportFragment : Fragment() {
+class ReportFragment : Fragment(), DonationClickListener {
 
     lateinit var app: ApexMealsApp
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var reportViewModel: ReportViewModel
+    private val args by navArgs<DonationDetailFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,23 +37,12 @@ class ReportFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _fragBinding = FragmentReportBinding.inflate(inflater, container, false)
-        val root = fragBinding.root
 
-        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        val view = inflater.inflate(R.layout.donation_detail_fragment, container, false)
 
-        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
-        reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
-                donations ->
-            donations?.let { render(donations) }
-        })
+        Toast.makeText(context,"Donation ID Selected : ${args.donationid}", Toast.LENGTH_LONG).show()
 
-        val fab: FloatingActionButton = fragBinding.fab
-        fab.setOnClickListener {
-            val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
-            findNavController().navigate(action)
-        }
-        return root
+        return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -62,7 +56,7 @@ class ReportFragment : Fragment() {
     }
 
     private fun render(donationsList: List<ApexMealsModel>) {
-        fragBinding.recyclerView.adapter = ApexMealsAdapter(donationsList)
+        fragBinding.recyclerView.adapter = ApexMealsAdapter(donationsList,this)
         if (donationsList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.donationsNotFound.visibility = View.VISIBLE
@@ -70,6 +64,11 @@ class ReportFragment : Fragment() {
             fragBinding.recyclerView.visibility = View.VISIBLE
             fragBinding.donationsNotFound.visibility = View.GONE
         }
+    }
+
+    override fun onDonationClick(donation: ApexMealsModel) {
+        val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(donation.id)
+        findNavController().navigate(action)
     }
 
     override fun onResume() {
