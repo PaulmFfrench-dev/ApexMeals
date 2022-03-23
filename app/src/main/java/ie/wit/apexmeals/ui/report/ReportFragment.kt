@@ -26,7 +26,6 @@ class ReportFragment : Fragment(), DonationClickListener {
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var reportViewModel: ReportViewModel
-    private val args by navArgs<DonationDetailFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +36,22 @@ class ReportFragment : Fragment(), DonationClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _fragBinding = FragmentReportBinding.inflate(inflater, container, false)
+        val root = fragBinding.root
 
-        val view = inflater.inflate(R.layout.donation_detail_fragment, container, false)
+        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+        reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
+                donations ->
+            donations?.let { render(donations) }
+        })
 
-        Toast.makeText(context,"Donation ID Selected : ${args.donationid}", Toast.LENGTH_LONG).show()
-
-        return view
+        val fab: FloatingActionButton = fragBinding.fab
+        fab.setOnClickListener {
+            val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
+            findNavController().navigate(action)
+        }
+        return root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

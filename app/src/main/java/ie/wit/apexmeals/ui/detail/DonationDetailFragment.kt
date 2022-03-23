@@ -6,27 +6,45 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import ie.wit.apexmeals.R
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
+import ie.wit.apexmeals.databinding.FragmentDonationDetailBinding
 
 class DonationDetailFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = DonationDetailFragment()
-    }
-
-    private lateinit var viewModel: DonationDetailViewModel
+    private lateinit var detailViewModel: DonationDetailViewModel
+    private val args by navArgs<DonationDetailFragmentArgs>()
+    private var _fragBinding: FragmentDonationDetailBinding? = null
+    private val fragBinding get() = _fragBinding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.donation_detail_fragment, container, false)
+
+        _fragBinding = FragmentDonationDetailBinding.inflate(inflater, container, false)
+        val root = fragBinding.root
+
+        detailViewModel = ViewModelProvider(this).get(DonationDetailViewModel::class.java)
+        detailViewModel.observableDonation.observe(viewLifecycleOwner, Observer { render() })
+        return root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DonationDetailViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun render(/*donation: DonationModel*/) {
+        // fragBinding.editAmount.setText(donation.amount.toString())
+        // fragBinding.editPaymenttype.text = donation.paymentmethod
+        fragBinding.editMessage.setText("A Message")
+        fragBinding.editUpvotes.setText("0")
+        fragBinding.donationvm = detailViewModel
     }
 
+    override fun onResume() {
+        super.onResume()
+        detailViewModel.getDonation(args.donationid)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _fragBinding = null
+    }
 }

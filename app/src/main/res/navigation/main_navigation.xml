@@ -39,7 +39,7 @@
         android:id="@+id/donationDetailFragment"
         android:name="ie.wit.apexmeals.ui.detail.DonationDetailFragment"
         android:label="donation_detail_fragment"
-        tools:layout="@layout/donation_detail_fragment" >
+        tools:layout="@layout/fragment_donation_detail" >
         <action
             android:id="@+id/action_donationDetailFragment_to_reportFragment"
             app:destination="@id/reportFragment" />

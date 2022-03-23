@@ -27,14 +27,6 @@ class Home : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton ?= findViewById(R.id.fab)
-        if (fab != null) {
-            fab.setOnClickListener { view ->
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-            }
-        }
-
         val navHostFragment = supportFragmentManager.
         findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
