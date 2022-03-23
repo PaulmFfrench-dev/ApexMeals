@@ -10,37 +10,28 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.FragmentDonateBinding
-import ie.wit.apexmeals.main.ApexMealsApp
-import ie.wit.apexmeals.models.ApexMealsModel
 
 class DonateFragment : Fragment() {
 
-    lateinit var app: ApexMealsApp
     var totalDonated = 0
     private var _fragBinding: FragmentDonateBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val fragBinding get() = _fragBinding!!
-    //lateinit var navController: NavController
     private lateinit var donateViewModel: DonateViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        app = activity?.application as ApexMealsApp
         setHasOptionsMenu(true)
-        //navController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _fragBinding = FragmentDonateBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        activity?.title = getString(R.string.action_donate)
 
-        donateViewModel =
-            ViewModelProvider(this).get(DonateViewModel::class.java)
-        //val textView: TextView = root.findViewById(R.id.text_home)
-        donateViewModel.text.observe(viewLifecycleOwner, Observer {
-            //textView.text = it
+        donateViewModel = ViewModelProvider(this).get(DonateViewModel::class.java)
+        donateViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
+                status -> status?.let { render(status) }
         })
 
         fragBinding.progressBar.max = 10000
@@ -55,12 +46,16 @@ class DonateFragment : Fragment() {
         return root;
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            DonateFragment().apply {
-                arguments = Bundle().apply {}
+    private fun render(status: Boolean) {
+        when (status) {
+            true -> {
+                view?.let {
+                    //Uncomment this if you want to immediately return to Report
+                    //findNavController().popBackStack()
+                }
             }
+            false -> Toast.makeText(context,getString(R.string.donationError),Toast.LENGTH_LONG).show()
+        }
     }
 
     fun setButtonListener(layout: FragmentDonateBinding) {
@@ -72,9 +67,9 @@ class DonateFragment : Fragment() {
             else {
                 val paymentmethod = if(layout.paymentMethod.checkedRadioButtonId == R.id.Direct) "Direct" else "Paypal"
                 totalDonated += amount
-                layout.totalSoFar.text = "$$totalDonated"
+                layout.totalSoFar.text = getString(R.string.total_donated,totalDonated)
                 layout.progressBar.progress = totalDonated
-                app.apexmealsStore.create(ApexMealsModel(paymentmethod = paymentmethod,amount = amount))
+
             }
         }
     }
@@ -89,19 +84,8 @@ class DonateFragment : Fragment() {
             requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
 
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-//    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        totalDonated = app.apexmealsStore.findAll().sumOf { it.amount }
-        fragBinding.progressBar.progress = totalDonated
-        fragBinding.totalSoFar.text = getString(R.string.total_donated,totalDonated)
     }
 }
