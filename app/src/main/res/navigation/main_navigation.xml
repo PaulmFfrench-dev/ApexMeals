@@ -7,12 +7,25 @@
 
     <fragment
         android:id="@+id/donateFragment"
-        android:name="ie.wit.apexmeals.DonateFragment"
+        android:name="ie.wit.apexmeals.fragments.DonateFragment"
         android:label="fragment_donate"
-        tools:layout="@layout/fragment_donate" />
+        tools:layout="@layout/fragment_donate" >
+        <action
+            android:id="@+id/action_donateFragment_to_reportFragment"
+            app:destination="@id/reportFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/reportFragment"
-        android:name="ie.wit.apexmeals.ReportFragment"
+        android:name="ie.wit.apexmeals.fragments.ReportFragment"
         android:label="fragment_report"
-        tools:layout="@layout/fragment_report" />
+        tools:layout="@layout/fragment_report" >
+        <action
+            android:id="@+id/action_reportFragment_to_donateFragment"
+            app:destination="@id/donateFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 </navigation>

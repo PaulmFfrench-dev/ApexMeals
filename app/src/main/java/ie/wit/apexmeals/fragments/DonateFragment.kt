@@ -1,11 +1,12 @@
-package ie.wit.apexmeals
+package ie.wit.apexmeals.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.FragmentDonateBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
@@ -20,6 +21,7 @@ class DonateFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as ApexMealsApp
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -57,6 +59,16 @@ class DonateFragment : Fragment() {
         }
 
         return root;
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_donate, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item,
+            requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

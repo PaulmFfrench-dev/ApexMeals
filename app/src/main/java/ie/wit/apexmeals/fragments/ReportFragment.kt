@@ -1,4 +1,4 @@
-package ie.wit.apexmeals
+package ie.wit.apexmeals.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import ie.wit.apexmeals.R
 import ie.wit.apexmeals.adapters.ApexMealsAdapter
 import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
