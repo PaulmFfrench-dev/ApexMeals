@@ -1,14 +1,14 @@
-package ie.wit.freedomfood.adapters
+package ie.wit.apexmeals.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ie.wit.freedomfood.R
-import ie.wit.freedomfood.databinding.CardFreedomfoodBinding
-import ie.wit.freedomfood.models.FreedomFoodModel
+import ie.wit.apexmeals.R
+import ie.wit.apexmeals.databinding.CardFreedomfoodBinding
+import ie.wit.apexmeals.models.ApexMealsModel
 
-class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodModel>)
-    : RecyclerView.Adapter<FreedomFoodAdapter.MainHolder>() {
+class ApexMealsAdapter constructor(private var apexmeals: List<ApexMealsModel>)
+    : RecyclerView.Adapter<ApexMealsAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardFreedomfoodBinding
@@ -18,15 +18,15 @@ class FreedomFoodAdapter constructor(private var freedomfoods: List<FreedomFoodM
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val donation = freedomfoods[holder.adapterPosition]
+        val donation = apexmeals[holder.adapterPosition]
         holder.bind(donation)
     }
 
-    override fun getItemCount(): Int = freedomfoods.size
+    override fun getItemCount(): Int = apexmeals.size
 
     inner class MainHolder(val binding : CardFreedomfoodBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(donation: FreedomFoodModel) {
+        fun bind(donation: ApexMealsModel) {
             binding.paymentamount.text = donation.amount.toString()
             binding.paymentmethod.text = donation.paymentmethod
             binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)

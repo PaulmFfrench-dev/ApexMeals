@@ -1,4 +1,4 @@
-package ie.wit.freedomfood
+package ie.wit.apexmeals
 
 import org.junit.Test
 

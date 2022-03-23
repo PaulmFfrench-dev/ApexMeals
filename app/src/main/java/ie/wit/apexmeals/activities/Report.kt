@@ -1,4 +1,4 @@
-package ie.wit.freedomfood.activities
+package ie.wit.apexmeals.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
-import ie.wit.freedomfood.R
-import ie.wit.freedomfood.adapters.FreedomFoodAdapter
-import ie.wit.freedomfood.databinding.ActivityReportBinding
-import ie.wit.freedomfood.main.FreedomFoodApp
+import ie.wit.apexmeals.R
+import ie.wit.apexmeals.adapters.ApexMealsAdapter
+import ie.wit.apexmeals.databinding.ActivityReportBinding
+import ie.wit.apexmeals.main.ApexMealsApp
 
 class Report : AppCompatActivity() {
 
-    lateinit var app: FreedomFoodApp
+    lateinit var app: ApexMealsApp
     lateinit var reportLayout : ActivityReportBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +21,9 @@ class Report : AppCompatActivity() {
         reportLayout = ActivityReportBinding.inflate(layoutInflater)
         setContentView(reportLayout.root)
 
-        app = this.application as FreedomFoodApp
+        app = this.application as ApexMealsApp
         reportLayout.recyclerView.layoutManager = LinearLayoutManager(this)
-        reportLayout.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoodsStore.findAll())
+        reportLayout.recyclerView.adapter = ApexMealsAdapter(app.apexmealsStore.findAll())
 
     }
 

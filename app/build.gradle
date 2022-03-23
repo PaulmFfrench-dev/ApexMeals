@@ -8,7 +8,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "ie.wit.freedomfood"
+        applicationId "ie.wit.apexmeals"
         minSdk 30
         targetSdk 31
         versionCode 1

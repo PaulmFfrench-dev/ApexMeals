@@ -1,4 +1,4 @@
-package ie.wit.freedomfood.activities
+package ie.wit.apexmeals.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,23 +6,23 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import ie.wit.freedomfood.R
-import ie.wit.freedomfood.databinding.ActivityFreedomfoodBinding
-import ie.wit.freedomfood.main.FreedomFoodApp
-import ie.wit.freedomfood.models.FreedomFoodModel
+import ie.wit.apexmeals.R
+import ie.wit.apexmeals.databinding.ActivityDonateBinding
+import ie.wit.apexmeals.main.ApexMealsApp
+import ie.wit.apexmeals.models.ApexMealsModel
 import timber.log.Timber
 
 class Donate : AppCompatActivity() {
 
-    private lateinit var donateLayout : ActivityFreedomfoodBinding
-    lateinit var app: FreedomFoodApp
+    private lateinit var donateLayout : ActivityDonateBinding
+    lateinit var app: ApexMealsApp
     var totalDonated = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        donateLayout = ActivityFreedomfoodBinding.inflate(layoutInflater)
+        donateLayout = ActivityDonateBinding.inflate(layoutInflater)
         setContentView(donateLayout.root)
-        app = this.application as FreedomFoodApp
+        app = this.application as ApexMealsApp
 
         donateLayout.progressBar.max = 10000
 
@@ -45,7 +45,7 @@ class Donate : AppCompatActivity() {
                 totalDonated += amount
                 donateLayout.totalSoFar.text = "$$totalDonated"
                 donateLayout.progressBar.progress = totalDonated
-                app.freedomfoodsStore.create(FreedomFoodModel(paymentmethod = paymentmethod,amount = amount))
+                app.apexmealsStore.create(ApexMealsModel(paymentmethod = paymentmethod,amount = amount))
                 Timber.i("Total Donated so far $totalDonated")
             }
         }
@@ -53,7 +53,7 @@ class Donate : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        totalDonated = app.freedomfoodsStore.findAll().sumOf { it.amount }
+        totalDonated = app.apexmealsStore.findAll().sumOf { it.amount }
         donateLayout.progressBar.progress = totalDonated
         donateLayout.totalSoFar.text = "$$totalDonated"
     }
