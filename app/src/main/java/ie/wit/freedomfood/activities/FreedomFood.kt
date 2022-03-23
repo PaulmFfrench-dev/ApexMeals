@@ -1,16 +1,22 @@
-package ie.wit.freedomfood
+package ie.wit.freedomfood.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import ie.wit.freedomfood.R
 import ie.wit.freedomfood.databinding.ActivityFreedomfoodBinding
+import ie.wit.freedomfood.main.FreedomFoodApp
+import ie.wit.freedomfood.models.FreedomFoodModel
 import timber.log.Timber
 
 class FreedomFood : AppCompatActivity() {
 
     private lateinit var donateLayout : ActivityFreedomfoodBinding
+    lateinit var app: FreedomFoodApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        app = this.application as FreedomFoodApp
+
         super.onCreate(savedInstanceState)
         donateLayout = ActivityFreedomfoodBinding.inflate(layoutInflater)
         setContentView(donateLayout.root)
@@ -31,13 +37,16 @@ class FreedomFood : AppCompatActivity() {
             val amount = if (donateLayout.paymentAmount.text.isNotEmpty())
                 donateLayout.paymentAmount.text.toString().toInt() else donateLayout.amountPicker.value
             if(totalDonated >= donateLayout.progressBar.max)
-                Toast.makeText(applicationContext,"Donate Amount Exceeded!",Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,"Donate Amount Exceeded!", Toast.LENGTH_LONG).show()
             else {
+                val paymentmethod = if(donateLayout.paymentMethod.checkedRadioButtonId == R.id.Direct)
+                    "Direct" else "Paypal"
                 totalDonated += amount
                 donateLayout.totalSoFar.text = "$$totalDonated"
                 donateLayout.progressBar.progress = totalDonated
+                app.freedomfoodsStore.create(FreedomFoodModel(paymentmethod = paymentmethod,amount = amount))
+                Timber.i("Total Donated so far $totalDonated")
             }
-            Timber.i("Total Donated so far $totalDonated")
         }
     }
 }
