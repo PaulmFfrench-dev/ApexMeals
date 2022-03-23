@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.FragmentDonateBinding
+import ie.wit.apexmeals.ui.report.ReportViewModel
 
 class DonateFragment : Fragment() {
 
@@ -72,6 +73,16 @@ class DonateFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+        reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
+            totalDonated = reportViewModel.observableDonationsList.value!!.sumOf { it.amount }
+            fragBinding.progressBar.progress = totalDonated
+            fragBinding.totalSoFar.text = getString(R.string.total_donated,totalDonated)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -17,6 +17,16 @@ class ApexMealsAdapter constructor(private var apexmeals: List<ApexMealsModel>)
         return MainHolder(binding)
     }
 
+    fun bind(donation: ApexMealsModel) {
+        //binding.paymentamount.text = donation.amount.toString()
+        //binding.paymentmethod.text = donation.paymentmethod
+
+        binding.donation = donation
+        binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
+        //Include this call to force the bindings to happen immediately
+        binding.executePendingBindings()
+    }
+    
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val apexmeal = apexmeals[holder.adapterPosition]
         holder.bind(apexmeal)
