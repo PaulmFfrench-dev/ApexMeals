@@ -1,9 +1,10 @@
-package org.wit.freedomfood
+package ie.wit.freedomfood
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import org.wit.freedomfood.databinding.ActivityFreedomfoodBinding
+import ie.wit.freedomfood.databinding.ActivityFreedomfoodBinding
+import timber.log.Timber
 
 class FreedomFood : AppCompatActivity() {
 
@@ -36,6 +37,7 @@ class FreedomFood : AppCompatActivity() {
                 donateLayout.totalSoFar.text = "$$totalDonated"
                 donateLayout.progressBar.progress = totalDonated
             }
+            Timber.i("Total Donated so far $totalDonated")
         }
     }
 }

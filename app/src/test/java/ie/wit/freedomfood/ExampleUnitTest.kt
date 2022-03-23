@@ -1,4 +1,4 @@
-package org.wit.freedomfood
+package ie.wit.freedomfood
 
 import org.junit.Test
 
