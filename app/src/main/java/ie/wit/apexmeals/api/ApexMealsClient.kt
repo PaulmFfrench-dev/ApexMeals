@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit
 
 object ApexMealsClient {
 
-    val serviceURL = "https://donationweb-hdip-server.herokuapp.com"
+    val serviceURL = "https://apexmeals.herokuapp.com/"
 
-    fun getApi() : DonationService {
+    fun getApi() : ApexMealsService {
 
         val gson = GsonBuilder().create()
 
@@ -25,6 +25,6 @@ object ApexMealsClient {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
-        return apiInterface.create(DonationService::class.java)
+        return apiInterface.create(ApexMealsService::class.java)
     }
 }

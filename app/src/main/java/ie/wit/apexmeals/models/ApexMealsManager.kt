@@ -2,6 +2,7 @@ package ie.wit.apexmeals.models
 
 import androidx.lifecycle.MutableLiveData
 import ie.wit.apexmeals.api.ApexMealsClient
+import ie.wit.apexmeals.api.ApexMealsWrapper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,9 +16,9 @@ internal fun getId(): Long {
 
 object ApexMealsManager : ApexMealsStore {
 
-    val apexmeals = ArrayList<ApexMealsModel>()
+    private var apexmeals = ArrayList<ApexMealsModel>()
 
-    override fun findAll(donationsList: MutableLiveData<List<ApexMealsModel>>) {
+    override fun findAll(apexmealsList: MutableLiveData<List<ApexMealsModel>>) {
 
         val call = ApexMealsClient.getApi().getall()
 
@@ -25,7 +26,7 @@ object ApexMealsManager : ApexMealsStore {
             override fun onResponse(call: Call<List<ApexMealsModel>>,
                                     response: Response<List<ApexMealsModel>>
             ) {
-                donationsList.value = response.body() as ArrayList<ApexMealsModel>
+                apexmealsList?.value = response.body() as ArrayList<ApexMealsModel>
                 Timber.i("Retrofit JSON = ${response.body()}")
             }
 
@@ -35,8 +36,8 @@ object ApexMealsManager : ApexMealsStore {
         })
     }
 
-    override fun findById(id:Long) : ApexMealsModel? {
-        val foundDonation: ApexMealsModel? = apexmeals.find { it.id == id }
+    override fun findById(id:String) : ApexMealsModel? {
+        val foundDonation: ApexMealsModel? = apexmeals.find { it._id == id }
         return foundDonation
     }
 
@@ -48,10 +49,10 @@ object ApexMealsManager : ApexMealsStore {
             override fun onResponse(call: Call<ApexMealsWrapper>,
                                     response: Response<ApexMealsWrapper>
             ) {
-                val donationWrapper = response.body()
-                if (donationWrapper != null) {
-                    Timber.i("Retrofit ${donationWrapper.message}")
-                    Timber.i("Retrofit ${donationWrapper.data.toString()}")
+                val apexmealsWrapper = response.body()
+                if (apexmealsWrapper != null) {
+                    Timber.i("Retrofit ${apexmealsWrapper.message}")
+                    Timber.i("Retrofit ${apexmealsWrapper.data.toString()}")
                 }
             }
 

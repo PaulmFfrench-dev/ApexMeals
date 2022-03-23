@@ -6,25 +6,35 @@ import androidx.lifecycle.ViewModel
 import ie.wit.apexmeals.models.ApexMealsManager
 import ie.wit.apexmeals.models.ApexMealsModel
 import timber.log.Timber
+import java.lang.Exception
 
 class ReportViewModel : ViewModel() {
 
-    private val apexmealsList = MutableLiveData<List<ApexMealsModel>>()
+    private val donationsList =
+        MutableLiveData<List<ApexMealsModel>>()
 
     val observableDonationsList: LiveData<List<ApexMealsModel>>
-        get() = apexmealsList
+        get() = donationsList
 
-    init {
-        load()
-    }
+    init { load() }
 
     fun load() {
         try {
-            ApexMealsManager.findAll(apexmealsList)
-            Timber.i("Retrofit Success : $apexmealsList.value")
+            ApexMealsManager.findAll(donationsList)
+            Timber.i("Retrofit Load Success : $donationsList.value")
         }
         catch (e: Exception) {
-            Timber.i("Retrofit Error : $e.message")
+            Timber.i("Retrofit Load Error : $e.message")
+        }
+    }
+
+    fun delete(id: String) {
+        try {
+            ApexMealsManager.delete(id)
+            Timber.i("Retrofit Delete Success")
+        }
+        catch (e: Exception) {
+            Timber.i("Retrofit Delete Error : $e.message")
         }
     }
 }

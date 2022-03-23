@@ -4,7 +4,7 @@ import ie.wit.apexmeals.models.ApexMealsModel
 import retrofit2.Call
 import retrofit2.http.*
 
-interface DonationService {
+interface ApexMealsService {
     @GET("/apexmeals")
     fun getall(): Call<List<ApexMealsModel>>
 

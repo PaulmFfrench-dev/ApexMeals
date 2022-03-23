@@ -3,31 +3,27 @@ package ie.wit.apexmeals.ui.report
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.adapters.ApexMealsAdapter
-import ie.wit.apexmeals.adapters.DonationClickListener
+import ie.wit.apexmeals.adapters.ApexMealsClickListener
 import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
-import ie.wit.apexmeals.ui.detail.DonationDetailFragmentArgs
 import ie.wit.apexmeals.utils.SwipeToDeleteCallback
 import ie.wit.apexmeals.utils.createLoader
 import ie.wit.apexmeals.utils.hideLoader
 import ie.wit.apexmeals.utils.showLoader
 
-class ReportFragment : Fragment(), DonationClickListener {
+class ReportFragment : Fragment(), ApexMealsClickListener {
 
     lateinit var app: ApexMealsApp
     private var _fragBinding: FragmentReportBinding? = null
@@ -40,46 +36,44 @@ class ReportFragment : Fragment(), DonationClickListener {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?
     ): View? {
         _fragBinding = FragmentReportBinding.inflate(inflater, container, false)
-        loader = createLoader(requireActivity())
         val root = fragBinding.root
+        loader = createLoader(requireActivity())
 
+        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
         showLoader(loader,"Downloading Donations")
         reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
                 donations ->
             donations?.let {
-                render(donations)
+                render(donations as ArrayList<ApexMealsModel>)
                 hideLoader(loader)
+                checkSwipeRefresh()
             }
         })
 
-        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
-        reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
-                donations ->
-            donations?.let { render(donations) }
-        })
-
-        val fab: FloatingActionButton = fragBinding.fab
-        fab.setOnClickListener {
+        fragBinding.fab.setOnClickListener {
             val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
             findNavController().navigate(action)
         }
 
+        setSwipeRefresh()
+
         val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                showLoader(loader,"Deleting Donation")
                 val adapter = fragBinding.recyclerView.adapter as ApexMealsAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-
+                reportViewModel.delete(viewHolder.itemView.tag as String)
+                hideLoader(loader)
             }
         }
-
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
         return root
     }
 
@@ -93,21 +87,7 @@ class ReportFragment : Fragment(), DonationClickListener {
             requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
 
-    fun setSwipeRefresh() {
-        fragBinding.swiperefresh.setOnRefreshListener {
-            fragBinding.swiperefresh.isRefreshing = true
-            showLoader(loader,"Downloading Donations")
-            //Retrieve Donation List again here
-
-        }
-    }
-
-    fun checkSwipeRefresh() {
-        if (fragBinding.swiperefresh.isRefreshing)
-            fragBinding.swiperefresh.isRefreshing = false
-    }
-
-    private fun render(donationsList: List<ApexMealsModel>) {
+    private fun render(donationsList: ArrayList<ApexMealsModel>) {
         fragBinding.recyclerView.adapter = ApexMealsAdapter(donationsList,this)
         if (donationsList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
@@ -119,8 +99,21 @@ class ReportFragment : Fragment(), DonationClickListener {
     }
 
     override fun onDonationClick(donation: ApexMealsModel) {
-        val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(donation.id)
+        val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(donation._id.toLong())
         findNavController().navigate(action)
+    }
+
+    fun setSwipeRefresh() {
+        fragBinding.swiperefresh.setOnRefreshListener {
+            fragBinding.swiperefresh.isRefreshing = true
+            showLoader(loader,"Downloading Donations")
+            reportViewModel.load()
+        }
+    }
+
+    fun checkSwipeRefresh() {
+        if (fragBinding.swiperefresh.isRefreshing)
+            fragBinding.swiperefresh.isRefreshing = false
     }
 
     override fun onResume() {

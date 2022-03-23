@@ -13,6 +13,6 @@ class DonationDetailViewModel : ViewModel() {
         get() = donation
 
     fun getDonation(id: Long) {
-        donation.value = ApexMealsManager.findById(id)
+        donation.value = ApexMealsManager.findById(id.toString())
     }
 }
