@@ -8,12 +8,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 
-var lastId = 0L
-
-internal fun getId(): Long {
-    return lastId++
-}
-
 object ApexMealsManager : ApexMealsStore {
 
     private var apexmeals = ArrayList<ApexMealsModel>()
@@ -80,10 +74,5 @@ object ApexMealsManager : ApexMealsStore {
                 Timber.i("Retrofit Delete Error : $t.message")
             }
         })
-    }
-
-    fun logAll() {
-        Timber.v("** Donations List **")
-        apexmeals.forEach { Timber.v("Donate ${it}") }
     }
 }

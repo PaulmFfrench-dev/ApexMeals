@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ie.wit.apexmeals">
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".main.ApexMealsApp"
         android:allowBackup="true"
@@ -10,13 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ApexMeals">
-        <activity android:name=".activities.Home"
+        <activity android:name=".activities.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activities.Home">
         </activity>
     </application>
 
