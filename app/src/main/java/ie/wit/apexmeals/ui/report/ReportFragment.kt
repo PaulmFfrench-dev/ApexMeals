@@ -78,6 +78,20 @@ class ReportFragment : Fragment(), DonationClickListener {
         return NavigationUI.onNavDestinationSelected(item,
             requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
+    
+    fun setSwipeRefresh() {
+        fragBinding.swiperefresh.setOnRefreshListener {
+            fragBinding.swiperefresh.isRefreshing = true
+            showLoader(loader,"Downloading Donations")
+            //Retrieve Donation List again here
+
+        }
+    }
+
+    fun checkSwipeRefresh() {
+        if (fragBinding.swiperefresh.isRefreshing)
+            fragBinding.swiperefresh.isRefreshing = false
+    }
 
     private fun render(donationsList: List<ApexMealsModel>) {
         fragBinding.recyclerView.adapter = ApexMealsAdapter(donationsList,this)
