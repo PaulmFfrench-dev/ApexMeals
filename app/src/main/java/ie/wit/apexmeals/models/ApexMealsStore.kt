@@ -10,4 +10,5 @@ interface ApexMealsStore {
     fun findById(email:String, id: String, apexmeals: MutableLiveData<ApexMealsModel>)
     fun create(apexmeals: ApexMealsModel)
     fun delete(email: String,id: String)
+    fun update(email:String,id: String,donation: ApexMealsModel)
 }

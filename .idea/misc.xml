@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/layout/app_bar_home.xml" value="0.1" />
+        <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/layout/card_donation.xml" value="0.1" />
+        <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/layout/content_home.xml" value="0.1" />
+        <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/layout/fragment_donate.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/layout/loading.xml" value="0.1" />
         <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/layout/nav_header.xml" value="0.1" />
         <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/menu/menu_donate.xml" value="0.1" />
         <entry key="..\:/Users/College/Desktop/MobileApp/MAD2-ApexMeals-A2/app/src/main/res/menu/menu_report.xml" value="0.1" />

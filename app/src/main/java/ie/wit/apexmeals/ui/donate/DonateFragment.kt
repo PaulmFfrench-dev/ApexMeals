@@ -49,6 +49,7 @@ class DonateFragment : Fragment() {
             fragBinding.paymentAmount.setText("$newVal")
         }
         setButtonListener(fragBinding)
+
         return root;
     }
 
@@ -73,12 +74,10 @@ class DonateFragment : Fragment() {
             else {
                 val paymentmethod = if(layout.paymentMethod.checkedRadioButtonId == R.id.Direct) "Direct" else "Paypal"
                 totalDonated += amount
-                layout.totalSoFar.text = getString(R.string.total_donated,totalDonated)
+                layout.totalSoFar.text = String.format(getString(R.string.totalSoFar),totalDonated)
                 layout.progressBar.progress = totalDonated
-                donateViewModel.addDonation(
-                    ApexMealsModel(paymentmethod = paymentmethod,amount = amount,
-                    email = loggedInViewModel.liveFirebaseUser.value?.email!!)
-                )
+                donateViewModel.addDonation(ApexMealsModel(paymentmethod = paymentmethod,amount = amount,
+                    email = loggedInViewModel.liveFirebaseUser.value?.email!!))
             }
         }
     }

@@ -7,12 +7,12 @@ import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.CardDonationBinding
 import ie.wit.apexmeals.models.ApexMealsModel
 
-interface ApexMealsClickListener {
-    fun onDonationClick(apexmeal: ApexMealsModel)
+interface DonationClickListener {
+    fun onDonationClick(donation: ApexMealsModel)
 }
 
-class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsModel>,
-                                  private val listener: ApexMealsClickListener)
+class ApexMealsAdapter constructor(private var donations: ArrayList<ApexMealsModel>,
+                                  private val listener: DonationClickListener)
     : RecyclerView.Adapter<ApexMealsAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -23,26 +23,25 @@ class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsMod
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val apexmeal = apexmeals[holder.adapterPosition]
-        holder.bind(apexmeal,listener)
+        val donation = donations[holder.adapterPosition]
+        holder.bind(donation,listener)
     }
 
     fun removeAt(position: Int) {
-        apexmeals.removeAt(position)
+        donations.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    override fun getItemCount(): Int = apexmeals.size
+    override fun getItemCount(): Int = donations.size
 
     inner class MainHolder(val binding : CardDonationBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(apexmeal: ApexMealsModel, listener: ApexMealsClickListener) {
-            binding.root.tag = apexmeal._id
-            binding.donation = apexmeal
-            binding.root.tag = apexmeal
+        fun bind(donation: ApexMealsModel, listener: DonationClickListener) {
+            binding.root.tag = donation
+            binding.donation = donation
             binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
-            binding.root.setOnClickListener { listener.onDonationClick(apexmeal) }
+            binding.root.setOnClickListener { listener.onDonationClick(donation) }
             binding.executePendingBindings()
         }
     }

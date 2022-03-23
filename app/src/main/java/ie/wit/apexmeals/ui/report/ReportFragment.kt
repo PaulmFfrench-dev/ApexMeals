@@ -44,7 +44,10 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         loader = createLoader(requireActivity())
 
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
+        fragBinding.fab.setOnClickListener {
+            val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
+            findNavController().navigate(action)
+        }
         showLoader(loader,"Downloading Donations")
         reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
                 donations ->
@@ -54,11 +57,6 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
                 checkSwipeRefresh()
             }
         })
-
-        fragBinding.fab.setOnClickListener {
-            val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
-            findNavController().navigate(action)
-        }
 
         setSwipeRefresh()
 
@@ -70,9 +68,12 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
                 reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.email!!,
                     (viewHolder.itemView.tag as ApexMealsModel)._id)
                 hideLoader(loader)
-
             }
         }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+
         val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 onDonationClick(viewHolder.itemView.tag as ApexMealsModel)
@@ -80,8 +81,6 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         }
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
         itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
-        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
-        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
         return root
     }

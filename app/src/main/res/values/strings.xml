@@ -7,14 +7,13 @@
     <string name="direct">Direct</string>
     <string name="amount">Amount</string>
     <string name="total">Total so Far</string>
-    <string name="totalSoFar">$ Total</string>
+    <string name="totalSoFar">$ %1$d</string>
     <string name="reportTitle">Donations Report</string>
     <string name="defaultAmount">00</string>
     <string name="defaultMethod">N/A</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="action_donate">Donate</string>
     <string name="action_report">Report</string>
-    <string name="total_donated">$%d</string>
 
     <string name="action_share">Share</string>
     <string name="action_send">Send</string>
@@ -28,8 +27,8 @@
     <string name="aboutus_title">Homer for President !!</string>
     <string name="aboutus_message">Hi, I\'m Homer\n\nPlease vote for me.\n\n Please Please Please Please!!</string>
 
-    <string name="donationsNotFound">No Donations Yet...\nGo Make a Donation!</string>
-    <string name="donationError">Error : Couldn\'t Make a Donation...</string>
+    <string name="donationsNotFound">No Donations Yet…\nGo Make a Donation!</string>
+    <string name="donationError">Error : Couldn\'t Make a Donation…</string>
     <string name="donationDetails">Donation Details</string>
 
     <string name="amt">Amount :</string>
@@ -38,6 +37,7 @@
     <string name="upvotes">UpVotes :</string>
 
     <string name="messageLoading">Please Wait while the Donations are Loading...</string>
+
     <!-- START Firebase Resources-->
 
     <string name="label_emailpassword">Email/Password Authentication</string>
@@ -60,7 +60,6 @@
     <string name="firebase_user_management">Firebase User Management</string>
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="emailpassword_title_text">Please Login Below</string>
-
     <string name="update">Update</string>
     <string name="delete">Delete</string>
 </resources>
