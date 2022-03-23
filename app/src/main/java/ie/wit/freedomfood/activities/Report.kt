@@ -18,7 +18,6 @@ class Report : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         reportLayout = ActivityReportBinding.inflate(layoutInflater)
         setContentView(reportLayout.root)
 
@@ -39,7 +38,7 @@ class Report : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_donate -> { startActivity(Intent(this, FreedomFood::class.java))
+            R.id.action_donate -> { startActivity(Intent(this, Donate::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -12,17 +12,17 @@ import ie.wit.freedomfood.main.FreedomFoodApp
 import ie.wit.freedomfood.models.FreedomFoodModel
 import timber.log.Timber
 
-class FreedomFood : AppCompatActivity() {
+class Donate : AppCompatActivity() {
 
     private lateinit var donateLayout : ActivityFreedomfoodBinding
     lateinit var app: FreedomFoodApp
+    var totalDonated = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        app = this.application as FreedomFoodApp
-
         super.onCreate(savedInstanceState)
         donateLayout = ActivityFreedomfoodBinding.inflate(layoutInflater)
         setContentView(donateLayout.root)
+        app = this.application as FreedomFoodApp
 
         donateLayout.progressBar.max = 10000
 
@@ -33,8 +33,6 @@ class FreedomFood : AppCompatActivity() {
             //Display the newly selected number to paymentAmount
             donateLayout.paymentAmount.setText("$newVal")
         }
-
-        var totalDonated = 0
 
         donateLayout.donateButton.setOnClickListener {
             val amount = if (donateLayout.paymentAmount.text.isNotEmpty())
@@ -51,6 +49,13 @@ class FreedomFood : AppCompatActivity() {
                 Timber.i("Total Donated so far $totalDonated")
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        totalDonated = app.freedomfoodsStore.findAll().sumOf { it.amount }
+        donateLayout.progressBar.progress = totalDonated
+        donateLayout.totalSoFar.text = "$$totalDonated"
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

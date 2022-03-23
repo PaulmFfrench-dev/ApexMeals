@@ -14,7 +14,7 @@
             android:name=".activities.Report"
             android:exported="false" />
         <activity
-            android:name=".activities.FreedomFood"
+            android:name=".activities.Donate"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
