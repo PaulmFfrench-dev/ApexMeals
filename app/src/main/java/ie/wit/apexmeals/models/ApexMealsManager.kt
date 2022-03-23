@@ -62,7 +62,23 @@ object ApexMealsManager : ApexMealsStore {
     }
 
     override fun delete(id: String) {
-        TODO("Not yet implemented")
+        val call = ApexMealsClient.getApi().delete(id)
+
+        call.enqueue(object : Callback<ApexMealsWrapper> {
+            override fun onResponse(call: Call<ApexMealsWrapper>,
+                                    response: Response<ApexMealsWrapper>
+            ) {
+                val donationWrapper = response.body()
+                if (donationWrapper != null) {
+                    Timber.i("Retrofit Delete ${donationWrapper.message}")
+                    Timber.i("Retrofit Delete ${donationWrapper.data.toString()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ApexMealsWrapper>, t: Throwable) {
+                Timber.i("Retrofit Delete Error : $t.message")
+            }
+        })
     }
 
     fun logAll() {
