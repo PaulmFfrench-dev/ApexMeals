@@ -3,13 +3,16 @@
     package="ie.wit.freedomfood">
 
     <application
-        android:name="ie.wit.freedomfood.main.FreedomFoodApp"
+        android:name=".main.FreedomFoodApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FreedomFood">
+        <activity
+            android:name=".activities.Report"
+            android:exported="false" />
         <activity
             android:name=".activities.FreedomFood"
             android:exported="true">
