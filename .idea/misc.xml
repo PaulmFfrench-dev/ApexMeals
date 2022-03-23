@@ -4,6 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Paul/Desktop/MobileApp/ApexMeals/app/src/main/res/layout/content_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/drawable/side_nav_bar.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/layout/card_donation.xml" value="0.1" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/menu/fragment_about.xml" value="0.1" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/menu/fragment_donate.xml" value="0.1" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/menu/fragment_report.xml" value="0.1" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/menu/home.xml" value="0.1" />
+        <entry key="..\:/Users/Paul/Desktop/MobileApp/MAD2-FreedomFood-A2/app/src/main/res/menu/nav_header.xml" value="0.1" />
       </map>
     </option>
   </component>
