@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -18,6 +19,7 @@ import ie.wit.apexmeals.adapters.ApexMealsClickListener
 import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.utils.SwipeToDeleteCallback
 import ie.wit.apexmeals.utils.createLoader
 import ie.wit.apexmeals.utils.hideLoader
@@ -28,7 +30,8 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
     lateinit var app: ApexMealsApp
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
-    private lateinit var reportViewModel: ReportViewModel
+    private val reportViewModel: ReportViewModel by activityViewModels()
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     lateinit var loader : AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +70,8 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
                 showLoader(loader,"Deleting Donation")
                 val adapter = fragBinding.recyclerView.adapter as ApexMealsAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-                reportViewModel.delete(viewHolder.itemView.tag as String)
+                reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.email!!,
+                    viewHolder.itemView.tag as String)
                 hideLoader(loader)
             }
         }
@@ -118,7 +122,14 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
     override fun onResume() {
         super.onResume()
-        reportViewModel.load()
+        showLoader(loader,"Downloading Donations")
+        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
+            if (firebaseUser != null) {
+                reportViewModel.liveFirebaseUser.value = firebaseUser
+                reportViewModel.load()
+            }
+        })
+        //hideLoader(loader)
     }
 
     override fun onDestroyView() {

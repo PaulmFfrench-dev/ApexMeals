@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 object ApexMealsClient {
 
-    val serviceURL = "ttps://donationweb-hdip-server.herokuapp.com"
+    val serviceURL = "https://donationweb-hdip-mu-server.herokuapp.com"
 
     fun getApi() : ApexMealsService {
 

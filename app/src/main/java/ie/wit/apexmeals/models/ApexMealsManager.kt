@@ -30,14 +30,32 @@ object ApexMealsManager : ApexMealsStore {
         })
     }
 
+    override fun findAll(email: String, apexmealsList: MutableLiveData<List<ApexMealsModel>>) {
+
+        val call = ApexMealsClient.getApi().findall(email)
+
+        call.enqueue(object : Callback<List<ApexMealsModel>> {
+            override fun onResponse(call: Call<List<ApexMealsModel>>,
+                                    response: Response<List<ApexMealsModel>>
+            ) {
+                apexmealsList.value = response.body() as ArrayList<ApexMealsModel>
+                Timber.i("Retrofit JSON = ${response.body()}")
+            }
+
+            override fun onFailure(call: Call<List<ApexMealsModel>>, t: Throwable) {
+                Timber.i("Retrofit Error : $t.message")
+            }
+        })
+    }
+
     override fun findById(id:String) : ApexMealsModel? {
         val foundDonation: ApexMealsModel? = apexmeals.find { it._id == id }
         return foundDonation
     }
 
-    override fun create(donation: ApexMealsModel) {
+    override fun create(apexmeals: ApexMealsModel) {
 
-        val call = ApexMealsClient.getApi().post(donation)
+        val call = ApexMealsClient.getApi().post(apexmeals.email,apexmeals)
 
         call.enqueue(object : Callback<ApexMealsWrapper> {
             override fun onResponse(call: Call<ApexMealsWrapper>,

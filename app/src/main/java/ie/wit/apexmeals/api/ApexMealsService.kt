@@ -6,19 +6,28 @@ import retrofit2.http.*
 
 interface ApexMealsService {
     @GET("/apexmeals")
-    fun getall(): Call<List<ApexMealsModel>>
+    fun findall(): Call<List<ApexMealsModel>>
 
-    @GET("/apexmeals/{id}")
-    fun get(@Path("id") id: String): Call<ApexMealsModel>
+    @GET("/apexmeals/{email}")
+    fun findall(@Path("email") email: String?)
+            : Call<List<ApexMealsModel>>
 
-    @DELETE("/apexmeals/{id}")
-    fun delete(@Path("id") id: String): Call<ApexMealsWrapper>
+    @GET("/apexmeals/{email}/{id}")
+    fun get(@Path("email") email: String?,
+            @Path("id") id: String): Call<ApexMealsModel>
 
-    @POST("/apexmeals")
-    fun post(@Body donation: ApexMealsModel): Call<ApexMealsWrapper>
+    @DELETE("/apexmeals/{email}/{id}")
+    fun delete(@Path("email") email: String?,
+               @Path("id") id: String): Call<ApexMealsWrapper>
 
-    @PUT("/apexmeals/{id}")
-    fun put(@Path("id") id: String,
-            @Body donation: ApexMealsModel
+    @POST("/apexmeals/{email}")
+    fun post(@Path("email") email: String?,
+             @Body donation: ApexMealsModel)
+            : Call<ApexMealsWrapper>
+
+    @PUT("/apexmeals/{email}/{id}")
+    fun put(@Path("email") email: String?,
+            @Path("id") id: String,
+            @Body apexmeals: ApexMealsModel
     ): Call<ApexMealsWrapper>
 }
