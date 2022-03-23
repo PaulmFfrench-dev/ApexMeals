@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ie.wit.apexmeals.databinding.FragmentDonationDetailBinding
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
+import ie.wit.apexmeals.ui.report.ReportViewModel
 
 class DonationDetailFragment : Fragment() {
 
@@ -20,6 +21,7 @@ class DonationDetailFragment : Fragment() {
     private var _fragBinding: FragmentDonationDetailBinding? = null
     private val fragBinding get() = _fragBinding!!
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private val reportViewModel : ReportViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +38,11 @@ class DonationDetailFragment : Fragment() {
         fragBinding.editDonationButton.setOnClickListener {
             detailViewModel.updateDonation(loggedInViewModel.liveFirebaseUser.value?.email!!,
                 args.donationid.toString(), fragBinding.donationvm?.observableDonation!!.value!!)
+            findNavController().navigateUp()
+        }
+        fragBinding.deleteDonationButton.setOnClickListener {
+            reportViewModel.delete(loggedInViewModel.liveFirebaseUser.value?.email!!,
+                detailViewModel.observableDonation.value?._id!!)
             findNavController().navigateUp()
         }
     }

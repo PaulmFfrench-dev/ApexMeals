@@ -40,6 +40,7 @@ class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsMod
         fun bind(apexmeal: ApexMealsModel, listener: ApexMealsClickListener) {
             binding.root.tag = apexmeal._id
             binding.donation = apexmeal
+            binding.root.tag = apexmeal
             binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
             binding.root.setOnClickListener { listener.onDonationClick(apexmeal) }
             binding.executePendingBindings()

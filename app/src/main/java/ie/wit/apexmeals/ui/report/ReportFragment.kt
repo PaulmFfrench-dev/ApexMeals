@@ -20,10 +20,7 @@ import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
-import ie.wit.apexmeals.utils.SwipeToDeleteCallback
-import ie.wit.apexmeals.utils.createLoader
-import ie.wit.apexmeals.utils.hideLoader
-import ie.wit.apexmeals.utils.showLoader
+import ie.wit.apexmeals.utils.*
 
 class ReportFragment : Fragment(), ApexMealsClickListener {
 
@@ -71,10 +68,18 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
                 val adapter = fragBinding.recyclerView.adapter as ApexMealsAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
                 reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.email!!,
-                    viewHolder.itemView.tag as String)
+                    (viewHolder.itemView.tag as ApexMealsModel)._id)
                 hideLoader(loader)
+
             }
         }
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onDonationClick(viewHolder.itemView.tag as ApexMealsModel)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
