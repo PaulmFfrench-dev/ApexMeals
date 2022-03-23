@@ -1,10 +1,10 @@
 package ie.wit.apexmeals.fragments
 
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.adapters.ApexMealsAdapter
@@ -16,24 +16,37 @@ class ReportFragment : Fragment() {
     lateinit var app: ApexMealsApp
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
+    //lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as ApexMealsApp
+        setHasOptionsMenu(true)
+        //navController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
-        fragBinding.recyclerView.adapter = ApexMealsAdapter(app.apexmealsStore.findAll())
-
         _fragBinding = FragmentReportBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         activity?.title = getString(R.string.action_report)
 
+        fragBinding.recyclerView.setLayoutManager(LinearLayoutManager(activity))
+        fragBinding.recyclerView.adapter = ApexMealsAdapter(app.apexmealsStore.findAll())
+
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_report, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item,
+            requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
 
     companion object {

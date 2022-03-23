@@ -17,11 +17,13 @@ class DonateFragment : Fragment() {
     var totalDonated = 0
     private var _fragBinding: FragmentDonateBinding? = null
     private val fragBinding get() = _fragBinding!!
+    //lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as ApexMealsApp
         setHasOptionsMenu(true)
+        //navController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
     }
 
     override fun onCreateView(
@@ -41,24 +43,32 @@ class DonateFragment : Fragment() {
             //Display the newly selected number to paymentAmount
             fragBinding.paymentAmount.setText("$newVal")
         }
+        setButtonListener(fragBinding)
+        return root;
+    }
 
-        fun setButtonListener(layout: FragmentDonateBinding) {
-            layout.donateButton.setOnClickListener {
-                val amount = if (layout.paymentAmount.text.isNotEmpty())
-                    layout.paymentAmount.text.toString().toInt() else layout.amountPicker.value
-                if(totalDonated >= layout.progressBar.max)
-                    Toast.makeText(context,"Donate Amount Exceeded!", Toast.LENGTH_LONG).show()
-                else {
-                    val paymentmethod = if(layout.paymentMethod.checkedRadioButtonId == R.id.Direct) "Direct" else "Paypal"
-                    totalDonated += amount
-                    layout.totalSoFar.text = "$$totalDonated"
-                    layout.progressBar.progress = totalDonated
-                    app.apexmealsStore.create(ApexMealsModel(paymentmethod = paymentmethod,amount = amount))
-                }
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            DonateFragment().apply {
+                arguments = Bundle().apply {}
+            }
+    }
+
+    fun setButtonListener(layout: FragmentDonateBinding) {
+        layout.donateButton.setOnClickListener {
+            val amount = if (layout.paymentAmount.text.isNotEmpty())
+                layout.paymentAmount.text.toString().toInt() else layout.amountPicker.value
+            if(totalDonated >= layout.progressBar.max)
+                Toast.makeText(context,"Donate Amount Exceeded!",Toast.LENGTH_LONG).show()
+            else {
+                val paymentmethod = if(layout.paymentMethod.checkedRadioButtonId == R.id.Direct) "Direct" else "Paypal"
+                totalDonated += amount
+                layout.totalSoFar.text = "$$totalDonated"
+                layout.progressBar.progress = totalDonated
+                app.apexmealsStore.create(ApexMealsModel(paymentmethod = paymentmethod,amount = amount))
             }
         }
-
-        return root;
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -71,6 +81,10 @@ class DonateFragment : Fragment() {
             requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
 
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+//    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
@@ -81,12 +95,5 @@ class DonateFragment : Fragment() {
         totalDonated = app.apexmealsStore.findAll().sumOf { it.amount }
         fragBinding.progressBar.progress = totalDonated
         fragBinding.totalSoFar.text = "$$totalDonated"
-    }
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            DonateFragment().apply {
-                arguments = Bundle().apply {}
-            }
     }
 }
