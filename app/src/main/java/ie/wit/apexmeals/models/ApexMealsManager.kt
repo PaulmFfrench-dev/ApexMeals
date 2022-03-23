@@ -40,10 +40,25 @@ object ApexMealsManager : ApexMealsStore {
         return foundDonation
     }
 
-    override fun create(apexmeal: ApexMealsModel) {
-        apexmeal.id = getId()
-        apexmeals.add(apexmeal)
-        logAll()
+    override fun create(donation: ApexMealsModel) {
+
+        val call = ApexMealsClient.getApi().post(donation)
+
+        call.enqueue(object : Callback<ApexMealsWrapper> {
+            override fun onResponse(call: Call<ApexMealsWrapper>,
+                                    response: Response<ApexMealsWrapper>
+            ) {
+                val donationWrapper = response.body()
+                if (donationWrapper != null) {
+                    Timber.i("Retrofit ${donationWrapper.message}")
+                    Timber.i("Retrofit ${donationWrapper.data.toString()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ApexMealsWrapper>, t: Throwable) {
+                Timber.i("Retrofit Error : $t.message")
+            }
+        })
     }
 
     fun logAll() {
