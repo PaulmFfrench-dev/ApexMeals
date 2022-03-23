@@ -5,12 +5,27 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.freedomfood.R
+import ie.wit.freedomfood.adapters.FreedomFoodAdapter
+import ie.wit.freedomfood.databinding.ActivityReportBinding
+import ie.wit.freedomfood.main.FreedomFoodApp
 
 class Report : AppCompatActivity() {
+
+    lateinit var app: FreedomFoodApp
+    lateinit var reportLayout : ActivityReportBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_report)
+
+        reportLayout = ActivityReportBinding.inflate(layoutInflater)
+        setContentView(reportLayout.root)
+
+        app = this.application as FreedomFoodApp
+        reportLayout.recyclerView.layoutManager = LinearLayoutManager(this)
+        reportLayout.recyclerView.adapter = FreedomFoodAdapter(app.freedomfoodsStore.findAll())
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -24,7 +39,7 @@ class Report : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.action_donate -> { startActivity(Intent(this, Report::class.java))
+            R.id.action_donate -> { startActivity(Intent(this, FreedomFood::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)
