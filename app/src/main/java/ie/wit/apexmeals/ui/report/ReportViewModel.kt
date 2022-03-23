@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ie.wit.apexmeals.models.ApexMealsManager
 import ie.wit.apexmeals.models.ApexMealsModel
+import timber.log.Timber
 
 class ReportViewModel : ViewModel() {
 
@@ -18,6 +19,12 @@ class ReportViewModel : ViewModel() {
     }
 
     fun load() {
-        apexmealsList.value = ApexMealsManager.findAll()
+        try {
+            ApexMealsManager.findAll(apexmealsList)
+            Timber.i("Retrofit Success : $apexmealsList.value")
+        }
+        catch (e: Exception) {
+            Timber.i("Retrofit Error : $e.message")
+        }
     }
 }

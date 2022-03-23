@@ -1,5 +1,6 @@
 package ie.wit.apexmeals.ui.report
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -19,6 +20,9 @@ import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
 import ie.wit.apexmeals.ui.detail.DonationDetailFragmentArgs
+import ie.wit.apexmeals.utils.createLoader
+import ie.wit.apexmeals.utils.hideLoader
+import ie.wit.apexmeals.utils.showLoader
 
 class ReportFragment : Fragment(), DonationClickListener {
 
@@ -26,6 +30,7 @@ class ReportFragment : Fragment(), DonationClickListener {
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var reportViewModel: ReportViewModel
+    lateinit var loader : AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,17 @@ class ReportFragment : Fragment(), DonationClickListener {
         savedInstanceState: Bundle?
     ): View? {
         _fragBinding = FragmentReportBinding.inflate(inflater, container, false)
+        loader = createLoader(requireActivity())
         val root = fragBinding.root
+
+        showLoader(loader,"Downloading Donations")
+        reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
+                donations ->
+            donations?.let {
+                render(donations)
+                hideLoader(loader)
+            }
+        })
 
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
         reportViewModel = ViewModelProvider(this).get(ReportViewModel::class.java)
