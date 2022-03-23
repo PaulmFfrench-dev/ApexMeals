@@ -61,6 +61,10 @@ object ApexMealsManager : ApexMealsStore {
         })
     }
 
+    override fun delete(id: String) {
+        TODO("Not yet implemented")
+    }
+
     fun logAll() {
         Timber.v("** Donations List **")
         apexmeals.forEach { Timber.v("Donate ${it}") }

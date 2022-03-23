@@ -11,7 +11,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.adapters.ApexMealsAdapter
@@ -20,6 +22,7 @@ import ie.wit.apexmeals.databinding.FragmentReportBinding
 import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
 import ie.wit.apexmeals.ui.detail.DonationDetailFragmentArgs
+import ie.wit.apexmeals.utils.SwipeToDeleteCallback
 import ie.wit.apexmeals.utils.createLoader
 import ie.wit.apexmeals.utils.hideLoader
 import ie.wit.apexmeals.utils.showLoader
@@ -66,6 +69,17 @@ class ReportFragment : Fragment(), DonationClickListener {
             val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
             findNavController().navigate(action)
         }
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = fragBinding.recyclerView.adapter as ApexMealsAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+
+            }
+        }
+
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
         return root
     }
 
@@ -78,7 +92,7 @@ class ReportFragment : Fragment(), DonationClickListener {
         return NavigationUI.onNavDestinationSelected(item,
             requireView().findNavController()) || super.onOptionsItemSelected(item)
     }
-    
+
     fun setSwipeRefresh() {
         fragBinding.swiperefresh.setOnRefreshListener {
             fragBinding.swiperefresh.isRefreshing = true
