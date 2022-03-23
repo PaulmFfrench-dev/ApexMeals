@@ -7,7 +7,7 @@ interface ApexMealsStore {
                 MutableLiveData<List<ApexMealsModel>>)
     fun findAll(email: String, apexmealsList:
     MutableLiveData<List<ApexMealsModel>>)
-    fun findById(id: String) : ApexMealsModel?
+    fun findById(email:String, id: String, apexmeals: MutableLiveData<ApexMealsModel>)
     fun create(apexmeals: ApexMealsModel)
     fun delete(email: String,id: String)
 }

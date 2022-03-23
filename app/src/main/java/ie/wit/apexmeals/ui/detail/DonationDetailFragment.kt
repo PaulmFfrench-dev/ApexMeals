@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ie.wit.apexmeals.databinding.FragmentDonationDetailBinding
+import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 
 class DonationDetailFragment : Fragment() {
 
@@ -16,6 +19,7 @@ class DonationDetailFragment : Fragment() {
     private val args by navArgs<DonationDetailFragmentArgs>()
     private var _fragBinding: FragmentDonationDetailBinding? = null
     private val fragBinding get() = _fragBinding!!
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +32,12 @@ class DonationDetailFragment : Fragment() {
         detailViewModel = ViewModelProvider(this).get(DonationDetailViewModel::class.java)
         detailViewModel.observableDonation.observe(viewLifecycleOwner, Observer { render() })
         return root
+
+        fragBinding.editDonationButton.setOnClickListener {
+            detailViewModel.updateDonation(loggedInViewModel.liveFirebaseUser.value?.email!!,
+                args.donationid.toString(), fragBinding.donationvm?.observableDonation!!.value!!)
+            findNavController().navigateUp()
+        }
     }
 
     private fun render(/*donation: DonationModel*/) {
@@ -40,9 +50,10 @@ class DonationDetailFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        detailViewModel.getDonation(args.donationid)
-    }
+        detailViewModel.getDonation(loggedInViewModel.liveFirebaseUser.value?.email!!,
+            args.donationid.toString())
 
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null

@@ -48,9 +48,20 @@ object ApexMealsManager : ApexMealsStore {
         })
     }
 
-    override fun findById(id:String) : ApexMealsModel? {
-        val foundDonation: ApexMealsModel? = apexmeals.find { it._id == id }
-        return foundDonation
+    override fun findById(email: String, id: String, apexmeals: MutableLiveData<ApexMealsModel>)   {
+
+        val call = ApexMealsClient.getApi().get(email,id)
+
+        call.enqueue(object : Callback<ApexMealsModel> {
+            override fun onResponse(call: Call<ApexMealsModel>, response: Response<ApexMealsModel>) {
+                apexmeals.value = response.body() as ApexMealsModel
+                Timber.i("Retrofit findById() = ${response.body()}")
+            }
+
+            override fun onFailure(call: Call<ApexMealsModel>, t: Throwable) {
+                Timber.i("Retrofit findById() Error : $t.message")
+            }
+        })
     }
 
     override fun create(apexmeals: ApexMealsModel) {
@@ -90,6 +101,27 @@ object ApexMealsManager : ApexMealsStore {
 
             override fun onFailure(call: Call<ApexMealsWrapper>, t: Throwable) {
                 Timber.i("Retrofit Delete Error : $t.message")
+            }
+        })
+    }
+
+    override fun update(email: String,id: String, donation: ApexMealsModel) {
+
+        val call = ApexMealsClient.getApi().put(email,id,donation)
+
+        call.enqueue(object : Callback<ApexMealsWrapper> {
+            override fun onResponse(call: Call<ApexMealsWrapper>,
+                                    response: Response<ApexMealsWrapper>
+            ) {
+                val ApexMealsWrapper = response.body()
+                if (ApexMealsWrapper != null) {
+                    Timber.i("Retrofit Update ${ApexMealsWrapper.message}")
+                    Timber.i("Retrofit Update ${ApexMealsWrapper.data.toString()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ApexMealsWrapper>, t: Throwable) {
+                Timber.i("Retrofit Update Error : $t.message")
             }
         })
     }
