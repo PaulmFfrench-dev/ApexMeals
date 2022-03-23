@@ -1,4 +1,4 @@
-package org.wit.freedomfood_android
+package org.wit.freedomfood
 
 import org.junit.Test
 

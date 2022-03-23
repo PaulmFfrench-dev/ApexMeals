@@ -1,26 +1,3 @@
 <resources>
     <string name="app_name">FreedomFood</string>
-    <string name="button_addFreedomFood">Add a Restaurant</string>
-    <string name="hint_freedomfoodTitle">Restaurant name</string>
-    <string name="hint_freedomfoodDescription">Restaurant Description</string>
-    <string name="hint_freedomfoodRating">A rating of 1 - 5</string>
-    <string name="hint_freedomfoodMeal">Name of the Meal</string>
-    <string name="hint_freedomfoodAllergens">Yes or No</string>
-    <string name="menu_addFreedomFood">Add</string>
-    <string name="menu_cancelFreedomFood">Cancel</string>
-    <string name="enter_freedomfood_title"> Please enter a FreedomFood Title</string>
-    <string name="save_freedomfood"> Save FreedomFood </string>
-    <string name="button_addImage"> Add Image </string>
-    <string name="select_freedomfood_image">Select FreedomFood image</string>
-    <string name="change_freedomfood_image">Change FreedomFood image</string>
-    <string name="button_location">Set Location</string>
-    <string name="title_activity_map">Map</string>
-    <string name="menu_deletefreedomfood">Delete</string>
-    <string name="title_activity_freedomfood_maps">Map of All FreedomFoods </string>
-    <string name="freedomfood_image_placeholder">FreedomFood Image</string>
-    <string name="freedomfood_title_placeholder">Restaurant name</string>
-    <string name="freedomfood_description_placeholder">Restaurant Description</string>
-    <string name="freedomfood_rating_placeholder">Rating</string>
-    <string name="freedomfood_meal_placeholder">Meal name</string>
-    <string name="freedomfood_allergens_placeholder">Allergen Free?</string>
 </resources>
