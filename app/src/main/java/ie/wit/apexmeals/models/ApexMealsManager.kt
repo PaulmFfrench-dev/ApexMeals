@@ -8,7 +8,7 @@ internal fun getId(): Long {
     return lastId++
 }
 
-class ApexMealsMemStore : ApexMealsStore {
+object ApexMealsManager : ApexMealsStore {
 
     val apexmeals = ArrayList<ApexMealsModel>()
 
