@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
+import ie.wit.apexmeals.firebase.FirebaseDBManager
 import ie.wit.apexmeals.models.ApexMealsManager
 import ie.wit.apexmeals.models.ApexMealsModel
 import timber.log.Timber
@@ -31,9 +32,10 @@ class ReportViewModel : ViewModel() {
         }
     }
 
-    fun delete(email: String, id: String) {
+    fun delete(userid: String, id: String) {
         try {
-            ApexMealsManager.delete(email,id)
+            //DonationManager.delete(userid,id)
+            FirebaseDBManager.delete(userid,id)
             Timber.i("Report Delete Success")
         }
         catch (e: Exception) {
