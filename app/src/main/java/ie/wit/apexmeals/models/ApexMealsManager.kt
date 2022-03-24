@@ -2,6 +2,9 @@ package ie.wit.apexmeals.models
 
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import ie.wit.apexmeals.api.ApexMealsClient
 import ie.wit.apexmeals.api.ApexMealsWrapper
 import ie.wit.apexmeals.firebase.FirebaseDBManager.database
@@ -31,23 +34,27 @@ object ApexMealsManager : ApexMealsStore {
         })
     }
 
-    override fun findAll(email: String, donationsList: MutableLiveData<List<ApexMealsModel>>) {
+    override fun findAll(userid: String, apexmealsList: MutableLiveData<List<ApexMealsModel>>) {
 
-        val call = ApexMealsClient.getApi().findall(email)
+        database.child("user-apexmeals").child(userid)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Donation error : ${error.message}")
+                }
 
-        call.enqueue(object : Callback<List<ApexMealsModel>> {
-            override fun onResponse(
-                call: Call<List<ApexMealsModel>>,
-                response: Response<List<ApexMealsModel>>
-            ) {
-                donationsList.value = response.body() as ArrayList<ApexMealsModel>
-                Timber.i("Retrofit findAll() = ${response.body()}")
-            }
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<ApexMealsModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val apexmeal = it.getValue(ApexMealsModel::class.java)
+                        localList.add(apexmeal!!)
+                    }
+                    database.child("user-apexmeals").child(userid)
+                        .removeEventListener(this)
 
-            override fun onFailure(call: Call<List<ApexMealsModel>>, t: Throwable) {
-                Timber.i("Retrofit findAll() Error : $t.message")
-            }
-        })
+                    apexmealsList.value = localList
+                }
+            })
     }
 
     override fun findById(email: String, id: String, donation: MutableLiveData<ApexMealsModel>) {
