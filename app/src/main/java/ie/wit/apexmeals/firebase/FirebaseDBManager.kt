@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import ie.wit.apexmeals.models.ApexMealsModel
 import ie.wit.apexmeals.models.ApexMealsStore
+import timber.log.Timber
 
 object FirebaseDBManager : ApexMealsStore {
 
@@ -20,7 +21,14 @@ object FirebaseDBManager : ApexMealsStore {
     }
 
     override fun findById(userid: String, apexmealid: String, apexmeal: MutableLiveData<ApexMealsModel>) {
-        TODO("Not yet implemented")
+
+        database.child("user-donations").child(userid)
+            .child(apexmealid).get().addOnSuccessListener {
+                apexmeal.value = it.getValue(ApexMealsModel::class.java)
+                Timber.i("firebase Got value ${it.value}")
+            }.addOnFailureListener{
+                Timber.e("firebase Error getting data $it")
+            }
     }
 
     override fun create(firebaseUser: MutableLiveData<FirebaseUser>, apexmeal: ApexMealsModel) {
@@ -37,6 +45,13 @@ object FirebaseDBManager : ApexMealsStore {
     }
 
     override fun update(userid: String, apexmealid: String, apexmeal: ApexMealsModel) {
-        TODO("Not yet implemented")
+
+        val apexmealValues = apexmeal.toMap()
+
+        val childUpdate : MutableMap<String, Any?> = HashMap()
+        childUpdate["apexmeals/$apexmealid"] = apexmealValues
+        childUpdate["user-apexmeals/$userid/$apexmealid"] = apexmealValues
+
+        database.updateChildren(childUpdate)
     }
 }
