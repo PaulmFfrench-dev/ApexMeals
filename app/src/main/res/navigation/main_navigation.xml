@@ -44,7 +44,7 @@
             android:id="@+id/action_donationDetailFragment_to_reportFragment"
             app:destination="@id/reportFragment" />
         <argument
-            android:name="donationid"
-            app:argType="long" />
+            android:name="apexmealid"
+            app:argType="string" />
     </fragment>
 </navigation>

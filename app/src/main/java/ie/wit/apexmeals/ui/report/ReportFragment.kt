@@ -14,22 +14,20 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.apexmeals.R
-import ie.wit.apexmeals.adapters.ApexMealsAdapter
 import ie.wit.apexmeals.adapters.ApexMealsClickListener
+import ie.wit.apexmeals.adapters.ApexMealsAdapter
 import ie.wit.apexmeals.databinding.FragmentReportBinding
-import ie.wit.apexmeals.main.ApexMealsApp
 import ie.wit.apexmeals.models.ApexMealsModel
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.utils.*
 
 class ReportFragment : Fragment(), ApexMealsClickListener {
 
-    lateinit var app: ApexMealsApp
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
+    lateinit var loader : AlertDialog
     private val reportViewModel: ReportViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
-    lateinit var loader : AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +63,8 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
                 showLoader(loader,"Deleting Donation")
                 val adapter = fragBinding.recyclerView.adapter as ApexMealsAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-                reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.email!!,
-                    (viewHolder.itemView.tag as ApexMealsModel)._id)
+                reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.uid!!,
+                    (viewHolder.itemView.tag as ApexMealsModel).uid!!)
                 hideLoader(loader)
             }
         }
@@ -76,7 +74,7 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
         val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                onDonationClick(viewHolder.itemView.tag as ApexMealsModel)
+                onApexMealClick(viewHolder.itemView.tag as ApexMealsModel)
             }
         }
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
@@ -84,6 +82,7 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
         return root
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_report, menu)
@@ -106,12 +105,12 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         }
     }
 
-    override fun onDonationClick(donation: ApexMealsModel) {
-        val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(donation._id.toLong())
+    override fun onApexMealClick(apexmeal: ApexMealsModel) {
+        val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(apexmeal.uid!!)
         findNavController().navigate(action)
     }
 
-    fun setSwipeRefresh() {
+    private fun setSwipeRefresh() {
         fragBinding.swiperefresh.setOnRefreshListener {
             fragBinding.swiperefresh.isRefreshing = true
             showLoader(loader,"Downloading Donations")
@@ -119,7 +118,7 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         }
     }
 
-    fun checkSwipeRefresh() {
+    private fun checkSwipeRefresh() {
         if (fragBinding.swiperefresh.isRefreshing)
             fragBinding.swiperefresh.isRefreshing = false
     }

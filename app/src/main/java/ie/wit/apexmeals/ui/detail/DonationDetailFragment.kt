@@ -35,7 +35,7 @@ class DonationDetailFragment : Fragment() {
 
         fragBinding.editDonationButton.setOnClickListener {
             detailViewModel.updateDonation(loggedInViewModel.liveFirebaseUser.value?.email!!,
-                args.donationid.toString(), fragBinding.donationvm?.observableDonation!!.value!!)
+                args.apexmealid.toString(), fragBinding.donationvm?.observableDonation!!.value!!)
             //Force Reload of list to guarantee refresh
             reportViewModel.load()
             findNavController().navigateUp()
@@ -45,7 +45,7 @@ class DonationDetailFragment : Fragment() {
 
         fragBinding.deleteDonationButton.setOnClickListener {
             reportViewModel.delete(loggedInViewModel.liveFirebaseUser.value?.email!!,
-                detailViewModel.observableDonation.value?._id!!)
+                detailViewModel.observableDonation.value?.uid!!.toString())
             findNavController().navigateUp()
         }
         return root
@@ -59,7 +59,7 @@ class DonationDetailFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         detailViewModel.getDonation(loggedInViewModel.liveFirebaseUser.value?.email!!,
-            args.donationid.toString())
+            args.apexmealid)
     }
 
     override fun onDestroyView() {

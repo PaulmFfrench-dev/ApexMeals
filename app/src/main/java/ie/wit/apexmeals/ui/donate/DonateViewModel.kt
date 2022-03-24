@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.apexmeals.firebase.FirebaseDBManager
-import ie.wit.apexmeals.models.ApexMealsManager
 import ie.wit.apexmeals.models.ApexMealsModel
 
 class DonateViewModel : ViewModel() {

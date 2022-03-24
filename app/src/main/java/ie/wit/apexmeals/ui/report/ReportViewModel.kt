@@ -5,18 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.apexmeals.firebase.FirebaseDBManager
-import ie.wit.apexmeals.models.ApexMealsManager
 import ie.wit.apexmeals.models.ApexMealsModel
 import timber.log.Timber
 import java.lang.Exception
 
 class ReportViewModel : ViewModel() {
 
-    private val apexmealsList =
+    private val donationsList =
         MutableLiveData<List<ApexMealsModel>>()
 
     val observableDonationsList: LiveData<List<ApexMealsModel>>
-        get() = apexmealsList
+        get() = donationsList
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
 
@@ -24,8 +23,10 @@ class ReportViewModel : ViewModel() {
 
     fun load() {
         try {
-            ApexMealsManager.findAll(liveFirebaseUser.value?.email!!, apexmealsList)
-            Timber.i("Report Load Success : ${apexmealsList.value.toString()}")
+            //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
+            FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,
+                donationsList)
+            Timber.i("Report Load Success : ${donationsList.value.toString()}")
         }
         catch (e: Exception) {
             Timber.i("Report Load Error : $e.message")

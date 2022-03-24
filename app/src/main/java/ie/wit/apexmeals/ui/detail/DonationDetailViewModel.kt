@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ie.wit.apexmeals.firebase.FirebaseDBManager
-import ie.wit.apexmeals.models.ApexMealsManager
 import ie.wit.apexmeals.models.ApexMealsModel
 import timber.log.Timber
 import java.lang.Exception
@@ -15,16 +14,6 @@ class DonationDetailViewModel : ViewModel() {
     var observableDonation: LiveData<ApexMealsModel>
         get() = apexmeal
         set(value) {apexmeal.value = value.value}
-
-
-//    //@InverseMethod("setAmount")
-//    //fun getAmount() : Int {return donation.value!!.amount  }
-//    //fun setAmount(amount: Int) {donation.value!!.amount = amount }
-//
-//    fun getMessage() : String { return donation.value!!.message  }
-//    //@InverseMethod("setMessage")
-//    fun setMessage(message: String) {donation.value!!.message = message }
-//
 
     fun getDonation(userid:String, id: String) {
         try {
