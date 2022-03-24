@@ -76,8 +76,9 @@ class DonateFragment : Fragment() {
                 totalDonated += amount
                 layout.totalSoFar.text = String.format(getString(R.string.totalSoFar),totalDonated)
                 layout.progressBar.progress = totalDonated
-                donateViewModel.addDonation(ApexMealsModel(paymentmethod = paymentmethod,amount = amount,
-                    email = loggedInViewModel.liveFirebaseUser.value?.email!!))
+                donateViewModel.addDonation(loggedInViewModel.liveFirebaseUser,
+                    ApexMealsModel(paymentmethod = paymentmethod,amount = amount,
+                        email = loggedInViewModel.liveFirebaseUser.value?.email!!))
             }
         }
     }

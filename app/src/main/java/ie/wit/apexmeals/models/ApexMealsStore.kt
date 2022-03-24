@@ -1,14 +1,17 @@
 package ie.wit.apexmeals.models
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 
 interface ApexMealsStore {
-    fun findAll(apexmealsList:
+    fun findAll(apexMealsList:
                 MutableLiveData<List<ApexMealsModel>>)
-    fun findAll(email: String, apexmealsList:
-    MutableLiveData<List<ApexMealsModel>>)
-    fun findById(email:String, id: String, apexmeals: MutableLiveData<ApexMealsModel>)
-    fun create(apexmeals: ApexMealsModel)
-    fun delete(email: String,id: String)
-    fun update(email:String,id: String,donation: ApexMealsModel)
+    fun findAll(userid:String,
+                apexMealsList:
+                MutableLiveData<List<ApexMealsModel>>)
+    fun findById(userid:String, apexmealid: String,
+                 apexmeal: MutableLiveData<ApexMealsModel>)
+    fun create(firebaseUser: MutableLiveData<FirebaseUser>, apexmeal: ApexMealsModel)
+    fun delete(userid:String, apexmealid: String)
+    fun update(userid:String, apexmealid: String, apexmeal: ApexMealsModel)
 }

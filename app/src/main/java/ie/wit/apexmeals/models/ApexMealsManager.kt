@@ -1,8 +1,10 @@
 package ie.wit.apexmeals.models
 
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 import ie.wit.apexmeals.api.ApexMealsClient
 import ie.wit.apexmeals.api.ApexMealsWrapper
+import ie.wit.apexmeals.firebase.FirebaseDBManager.database
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,28 +66,23 @@ object ApexMealsManager : ApexMealsStore {
         })
     }
 
-    override fun create(donation: ApexMealsModel) {
+    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, apexmeal: ApexMealsModel) {
+        Timber.i("Firebase DB Reference : $database")
 
-        val call = ApexMealsClient.getApi().post(donation.email, donation)
-        Timber.i("Retrofit ${call.toString()}")
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("donations").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
+        }
+        apexmeal.uid = key
+        val donationValues = apexmeal.toMap()
 
-        call.enqueue(object : Callback<ApexMealsWrapper> {
-            override fun onResponse(
-                call: Call<ApexMealsWrapper>,
-                response: Response<ApexMealsWrapper>
-            ) {
-                val donationWrapper = response.body()
-                if (donationWrapper != null) {
-                    Timber.i("Retrofit ${donationWrapper.message}")
-                    Timber.i("Retrofit ${donationWrapper.data.toString()}")
-                }
-            }
+        val childAdd = HashMap<String, Any>()
+        childAdd["/donations/$key"] = donationValues
+        childAdd["/user-donations/$uid/$key"] = donationValues
 
-            override fun onFailure(call: Call<ApexMealsWrapper>, t: Throwable) {
-                Timber.i("Retrofit Error : $t.message")
-                Timber.i("Retrofit create Error : $t.message")
-            }
-        })
+        database.updateChildren(childAdd)
     }
 
     override fun delete(email: String, id: String) {
