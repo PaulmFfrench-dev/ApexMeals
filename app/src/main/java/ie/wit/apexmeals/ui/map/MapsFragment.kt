@@ -5,9 +5,8 @@ import android.app.AlertDialog
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -71,15 +70,20 @@ class MapsFragment : Fragment() {
     }
 
     private fun render(apexmealsList: ArrayList<ApexMealsModel>) {
+        var markerColour: Float
         if (!apexmealsList.isEmpty()) {
             mapsViewModel.map.clear()
             apexmealsList.forEach {
+                if(it.email.equals(this.reportViewModel.liveFirebaseUser.value!!.email))
+                    markerColour = BitmapDescriptorFactory.HUE_AZURE + 5
+                else
+                    markerColour = BitmapDescriptorFactory.HUE_RED
+
                 mapsViewModel.map.addMarker(
                     MarkerOptions().position(LatLng(it.latitude, it.longitude))
                         .title("${it.paymentmethod} €${it.amount}")
                         .snippet(it.message)
-                        .icon(
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .icon(BitmapDescriptorFactory.defaultMarker(markerColour ))
                 )
             }
         }
@@ -95,4 +99,24 @@ class MapsFragment : Fragment() {
             }
         })
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_map, menu)
+
+        val item = menu.findItem(R.id.toggleDonations) as MenuItem
+        item.setActionView(R.layout.togglebutton_layout)
+        val toggleDonations: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
+        toggleDonations.isChecked = false
+
+        toggleDonations.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) reportViewModel.loadAll()
+            else reportViewModel.load()
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
 }
