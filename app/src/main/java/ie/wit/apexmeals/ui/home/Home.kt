@@ -18,6 +18,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import ie.wit.apexmeals.R
@@ -62,12 +65,14 @@ class Home : AppCompatActivity() {
         }
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.donateFragment, R.id.reportFragment, R.id.aboutFragment), drawerLayout)
+            R.id.donateFragment, R.id.reportFragment, R.id.mapsFragment, R.id.aboutFragment), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
-
+        val wit = LatLng(52.245696, -7.139102)
+        googleMap.addMarker(MarkerOptions().position(wit).title("Marker in Waterford"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wit, 14f))
 //        navController.addOnDestinationChangedListener { _, destination, arguments ->
 //            when(destination.id) {
 //                R.id.reportFragment -> {

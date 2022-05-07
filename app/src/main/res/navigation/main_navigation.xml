@@ -47,4 +47,13 @@
             android:name="apexmealid"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="ie.wit.apexmeals.ui.map.MapsFragment"
+        android:label="ApexMeals Map"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_donationDetailFragment"
+            app:destination="@id/donationDetailFragment" />
+    </fragment>
 </navigation>
