@@ -15,6 +15,8 @@ data class ApexMealsModel(
     var message: String = "Homer for President!",
     var upvotes: Int = 0,
     var profilepic: String = "",
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0
     var email: String? = "joe@bloggs.com")
     : Parcelable
 {
@@ -28,6 +30,7 @@ data class ApexMealsModel(
             "upvotes" to upvotes,
             "profilepic" to profilepic,
             "email" to email
+
         )
     }
 }

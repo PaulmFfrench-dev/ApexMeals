@@ -13,6 +13,7 @@ import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.FragmentDonateBinding
 import ie.wit.apexmeals.models.ApexMealsModel
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
+import ie.wit.apexmeals.ui.map.MapsViewModel
 import ie.wit.apexmeals.ui.report.ReportViewModel
 
 class DonateFragment : Fragment() {
@@ -24,6 +25,7 @@ class DonateFragment : Fragment() {
     private lateinit var donateViewModel: DonateViewModel
     private val reportViewModel: ReportViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private val mapsViewModel: MapsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +80,9 @@ class DonateFragment : Fragment() {
                 layout.progressBar.progress = totalDonated
                 donateViewModel.addDonation(loggedInViewModel.liveFirebaseUser,
                     ApexMealsModel(paymentmethod = paymentmethod,amount = amount,
-                        email = loggedInViewModel.liveFirebaseUser.value?.email!!))
+                        email = loggedInViewModel.liveFirebaseUser.value?.email!!,
+                        latitude = mapsViewModel.currentLocation.value!!.latitude,
+                        longitude = mapsViewModel.currentLocation.value!!.longitude))
             }
         }
     }
