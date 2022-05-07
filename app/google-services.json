@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "832364664342-i874aobpriq95d8benicjt3s2b1vhi3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ie.wit.apexmeals",
+            "certificate_hash": "553a0bd5ef624e7e808267adf7266483b15a1c25"
+          }
+        },
+        {
           "client_id": "832364664342-8cuupaecak31pcstn0vqu2b0rcblciik.apps.googleusercontent.com",
           "client_type": 3
         }
