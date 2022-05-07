@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,19 +17,15 @@ import ie.wit.apexmeals.R
 
 class MapsFragment : Fragment() {
 
+    private lateinit var mapsViewModel: MapsViewModel
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mapsViewModel.map = googleMap
+        val loc = LatLng(52.245696, -7.139102)
+
+        mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
+        mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+        mapsViewModel.map.addMarker(MarkerOptions().position(loc).title("You are Here!"))
+        mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
     }
 
     override fun onCreateView(
@@ -36,6 +33,9 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        mapsViewModel = ViewModelProvider(this).get(MapsViewModel::class.java)
+
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
