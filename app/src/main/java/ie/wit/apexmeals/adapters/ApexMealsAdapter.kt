@@ -12,14 +12,15 @@ interface ApexMealsClickListener {
 }
 
 class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsModel>,
-                                  private val listener: ApexMealsClickListener)
+                                  private val listener: ApexMealsClickListener,
+                                  private val readOnly: Boolean)
     : RecyclerView.Adapter<ApexMealsAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardDonationBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding)
+        return MainHolder(binding,readOnly)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -34,8 +35,10 @@ class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsMod
 
     override fun getItemCount(): Int = apexmeals.size
 
-    inner class MainHolder(val binding : CardDonationBinding) :
+    inner class MainHolder(val binding : CardDonationBinding, private val readOnly : Boolean) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val readOnlyRow = readOnly
 
         fun bind(apexmeal: ApexMealsModel, listener: ApexMealsClickListener) {
             binding.root.tag = apexmeal

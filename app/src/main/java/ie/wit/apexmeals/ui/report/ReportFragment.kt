@@ -3,6 +3,7 @@ package ie.wit.apexmeals.ui.report
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -47,7 +48,7 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
             findNavController().navigate(action)
         }
         showLoader(loader,"Downloading Donations")
-        reportViewModel.observableDonationsList.observe(viewLifecycleOwner, Observer {
+        reportViewModel.observableApexMealsList.observe(viewLifecycleOwner, Observer {
                 donations ->
             donations?.let {
                 render(donations as ArrayList<ApexMealsModel>)
@@ -83,9 +84,19 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         return root
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_report, menu)
+
+        val item = menu.findItem(R.id.toggleDonations) as MenuItem
+        item.setActionView(R.layout.togglebutton_layout)
+        val toggleDonations: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
+        toggleDonations.isChecked = false
+
+        toggleDonations.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) reportViewModel.loadAll()
+            else reportViewModel.load()
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -96,6 +107,7 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
     private fun render(donationsList: ArrayList<ApexMealsModel>) {
         fragBinding.recyclerView.adapter = ApexMealsAdapter(donationsList,this)
+        reportViewModel.readOnly.value!!
         if (donationsList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.donationsNotFound.visibility = View.VISIBLE
@@ -107,14 +119,18 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
     override fun onApexMealClick(apexmeal: ApexMealsModel) {
         val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(apexmeal.uid!!)
-        findNavController().navigate(action)
+        if(!reportViewModel.readOnly.value!!)
+            findNavController().navigate(action)
     }
 
     private fun setSwipeRefresh() {
         fragBinding.swiperefresh.setOnRefreshListener {
             fragBinding.swiperefresh.isRefreshing = true
             showLoader(loader,"Downloading Donations")
-            reportViewModel.load()
+            if(reportViewModel.readOnly.value!!)
+                reportViewModel.loadAll()
+            else
+                reportViewModel.load()
         }
     }
 
@@ -139,4 +155,5 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         super.onDestroyView()
         _fragBinding = null
     }
+
 }

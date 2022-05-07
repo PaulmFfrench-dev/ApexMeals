@@ -12,7 +12,25 @@ object FirebaseDBManager : ApexMealsStore {
     var database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
     override fun findAll(apexmealsList: MutableLiveData<List<ApexMealsModel>>) {
-        TODO("Not yet implemented")
+        database.child("apexmeals")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase ApexMeal error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<ApexMealsModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val apexmeals = it.getValue(ApexMealsModel::class.java)
+                        localList.add(apexmeals!!)
+                    }
+                    database.child("apexmeals")
+                        .removeEventListener(this)
+
+                    apexmealsList.value = localList
+                }
+            })
     }
 
     override fun findAll(userid: String, apexmealsList: MutableLiveData<List<ApexMealsModel>>) {
