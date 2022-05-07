@@ -15,11 +15,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.HomeBinding
 import ie.wit.apexmeals.databinding.NavHeaderBinding
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.ui.auth.Login
+import ie.wit.apexmeals.utils.customTransformation
 
 class Home : AppCompatActivity() {
 
@@ -85,6 +87,15 @@ class Home : AppCompatActivity() {
         var headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
         navHeaderBinding.navHeaderEmail.text = currentUser.email
+        navHeaderBinding.navHeaderName.text = currentUser.displayName
+        if(currentUser.photoUrl != null && currentUser.displayName != null) {
+            navHeaderBinding.navHeaderName.text = currentUser.displayName
+            Picasso.get().load(currentUser.photoUrl)
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(navHeaderBinding.navHeaderImage)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
