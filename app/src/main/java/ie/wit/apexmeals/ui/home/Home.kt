@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,6 +27,7 @@ import ie.wit.apexmeals.firebase.FirebaseImageManager
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.ui.auth.Login
 import ie.wit.apexmeals.utils.customTransformation
+import ie.wit.apexmeals.utils.readImageUri
 import timber.log.Timber
 
 class Home : AppCompatActivity() {
@@ -34,6 +37,7 @@ class Home : AppCompatActivity() {
     private lateinit var navHeaderBinding : NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
+    private lateinit var intentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,5 +142,24 @@ class Home : AppCompatActivity() {
         val intent = Intent(this, Login::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+    }
+
+    private fun registerImagePickerCallback() {
+        intentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                when(result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            Timber.i("DX registerPickerCallback() ${readImageUri(result.resultCode, result.data).toString()}")
+                            FirebaseImageManager
+                                .updateUserImage(loggedInViewModel.liveFirebaseUser.value!!.uid,
+                                    readImageUri(result.resultCode, result.data),
+                                    navHeaderBinding.navHeaderImage,
+                                    true)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 }

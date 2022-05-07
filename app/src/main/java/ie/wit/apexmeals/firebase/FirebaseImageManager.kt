@@ -56,6 +56,7 @@ class FirebaseImageManager {
             uploadTask.addOnSuccessListener { ut ->
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                     imageUri.value = task.result!!
+                    FirebaseDBManager.updateImageRef(userid,imageUri.value.toString())
                 }
             }
         }
