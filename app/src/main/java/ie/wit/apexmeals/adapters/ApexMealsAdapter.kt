@@ -3,9 +3,11 @@ package ie.wit.apexmeals.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.wit.apexmeals.R
 import ie.wit.apexmeals.databinding.CardDonationBinding
 import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.utils.customTransformation
 
 interface ApexMealsClickListener {
     fun onApexMealClick(apexmeal: ApexMealsModel)
@@ -19,7 +21,11 @@ class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsMod
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardDonationBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-
+        Picasso.get().load(apexmeals.profilepic.toUri())
+            .resize(200, 200)
+            .transform(customTransformation())
+            .centerCrop()
+            .into(binding.imageIcon)
         return MainHolder(binding,readOnly)
     }
 
