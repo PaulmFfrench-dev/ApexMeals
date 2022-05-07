@@ -24,12 +24,14 @@ class MapsFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
         mapsViewModel.map = googleMap
         mapsViewModel.map.isMyLocationEnabled = true
-        val loc = LatLng(mapsViewModel.currentLocation.value!!.latitude,
-            mapsViewModel.currentLocation.value!!.longitude)
+        mapsViewModel.currentLocation.observe(viewLifecycleOwner,{
+            val loc = LatLng(mapsViewModel.currentLocation.value!!.latitude,
+                mapsViewModel.currentLocation.value!!.longitude)
 
-        mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
-        mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
-        mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
+            mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
+            mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
+            mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
+        })
     }
 
     override fun onCreateView(
