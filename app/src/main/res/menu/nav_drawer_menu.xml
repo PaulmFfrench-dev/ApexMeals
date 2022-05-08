@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+    <item android:title="Profile">
+        <menu>
+            <item
+                android:id="@+id/profileFragment"
+                android:icon="@drawable/ic_menu_profile"
+                android:title="@string/profile" />
+        </menu>
+    </item>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/apexmealdonateFragment"
@@ -20,6 +28,7 @@
             android:icon="@drawable/ic_menu_aboutus"
             android:title="@string/action_about" />
     </group>
+
     <item android:title="Access Control">
         <menu>
             <item

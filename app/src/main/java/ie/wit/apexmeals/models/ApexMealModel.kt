@@ -12,10 +12,12 @@ data class ApexMealModel(
     var uid: String? = "",
     var paymentmethod: String = "N/A",
     var amount: Int = 0,
-    var message: String = "Homer for President!",
-    var upvotes: Int = 0,
+    var message: String = "Keep up the good work!",
     var profilepic: String = "",
-    var email: String? = "joe@bloggs.com",
+    var name: String = "",
+    var address: String = "",
+    var phoneno: Int = 0,
+    var email: String? = "JD@gmail.com",
     var latitude: Double = 0.0,
     var longitude: Double = 0.0)
 
@@ -28,8 +30,10 @@ data class ApexMealModel(
             "paymentmethod" to paymentmethod,
             "amount" to amount,
             "message" to message,
-            "upvotes" to upvotes,
             "profilepic" to profilepic,
+            "name" to name,
+            "address" to address,
+            "phoneno" to phoneno,
             "email" to email,
             "latitude" to latitude,
             "longitude" to longitude

@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/apexmealdonationDetailFragment"
         android:name="ie.wit.apexmeals.ui.detail.ApexMealDonationDetailFragment"
-        android:label="apex_meal_donation_detail_fragment"
+        android:label="Edit your Donation"
         tools:layout="@layout/fragment_apex_meal_donation_detail" >
         <action
             android:id="@+id/action_apexmealdonationDetailFragment_to_reportFragment"
@@ -55,5 +55,18 @@
         <action
             android:id="@+id/action_mapsFragment_to_apexmealdonationDetailFragment"
             app:destination="@id/apexmealdonationDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="ie.wit.apexmeals.ui.profile.ProfileFragment"
+        android:label="Edit your Profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_reportFragment"
+            app:destination="@id/reportFragment" />
+        <argument
+            android:name="email"
+            android:defaultValue="paulffrench@gmail.com"
+            app:argType="string" />
     </fragment>
 </navigation>

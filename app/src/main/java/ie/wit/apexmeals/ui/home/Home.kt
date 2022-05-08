@@ -121,8 +121,8 @@ class Home : AppCompatActivity() {
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
-        FirebaseImageManager.imageUri.observe(this, { result ->
-            if(result == Uri.EMPTY) {
+        FirebaseImageManager.imageUri.observe(this) { result ->
+            if (result == Uri.EMPTY) {
                 Timber.i("DX NO Existing imageUri")
                 if (currentUser.photoUrl != null) {
                     //if you're a google user
@@ -130,26 +130,26 @@ class Home : AppCompatActivity() {
                         currentUser.uid,
                         currentUser.photoUrl,
                         navHeaderBinding.navHeaderImage,
-                        false)
-                }
-                else
-                {
+                        false
+                    )
+                } else {
                     Timber.i("DX Loading Existing Default imageUri")
                     FirebaseImageManager.updateDefaultImage(
                         currentUser.uid,
                         R.drawable.ic_launcher_apexmeals,
-                        navHeaderBinding.navHeaderImage)
+                        navHeaderBinding.navHeaderImage
+                    )
                 }
-            }
-            else // load existing image from firebase
+            } else // load existing image from firebase
             {
                 Timber.i("DX Loading Existing imageUri")
                 FirebaseImageManager.updateUserImage(
                     currentUser.uid,
                     FirebaseImageManager.imageUri.value,
-                    navHeaderBinding.navHeaderImage, false)
+                    navHeaderBinding.navHeaderImage, false
+                )
             }
-        })
+        }
         navHeaderBinding.navHeaderEmail.text = currentUser.email
         if(currentUser.displayName != null)
             navHeaderBinding.navHeaderName.text = currentUser.displayName
