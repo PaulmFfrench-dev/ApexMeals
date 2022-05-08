@@ -3,7 +3,7 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_100"
+    android:background="@color/darkgrey"
     android:orientation="vertical"
     android:weightSum="4">
 
@@ -117,7 +117,8 @@
                 android:id="@+id/googleSignInButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:theme="@style/ThemeOverlay.MyDarkButton" />
         </LinearLayout>
 
         <LinearLayout

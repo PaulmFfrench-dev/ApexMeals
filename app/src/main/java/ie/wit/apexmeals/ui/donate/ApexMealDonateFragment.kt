@@ -78,7 +78,7 @@ class ApexMealDonateFragment : Fragment() {
                 totalDonated += amount
                 layout.totalSoFar.text = String.format(getString(R.string.totalSoFar),totalDonated)
                 layout.progressBar.progress = totalDonated
-                apexmealdonateViewModel.addDonation(loggedInViewModel.liveFirebaseUser,
+                apexmealdonateViewModel.addApexMealDonation(loggedInViewModel.liveFirebaseUser,
                     ApexMealModel(paymentmethod = paymentmethod,amount = amount,
                         email = loggedInViewModel.liveFirebaseUser.value?.email!!,
                         latitude = mapsViewModel.currentLocation.value!!.latitude,

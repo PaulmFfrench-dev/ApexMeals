@@ -15,7 +15,7 @@ class ApexMealDonateViewModel : ViewModel() {
     val observableStatus: LiveData<Boolean>
         get() = status
 
-    fun addDonation(firebaseUser: MutableLiveData<FirebaseUser>,
+    fun addApexMealDonation(firebaseUser: MutableLiveData<FirebaseUser>,
                     apexmeal: ApexMealModel) {
         status.value = try {
             apexmeal.profilepic = FirebaseImageManager.imageUri.value.toString()
