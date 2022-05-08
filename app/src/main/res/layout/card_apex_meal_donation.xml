@@ -77,7 +77,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/imageIcon"
-                android:text="@{apexmealdonation.message}"
+                android:text="@{apexmealdonation.note}"
                 android:textColor="@color/color_primary"
                 tools:text="message" />
 

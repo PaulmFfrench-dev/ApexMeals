@@ -100,7 +100,7 @@ class MapsFragment : Fragment() {
                 mapsViewModel.map.addMarker(
                     MarkerOptions().position(LatLng(it.latitude, it.longitude))
                         .title("${it.paymentmethod} €${it.amount}")
-                        .snippet(it.message)
+                        .snippet(it.note)
                         .icon(BitmapDescriptorFactory.defaultMarker(markerColour ))
                 )
             }
