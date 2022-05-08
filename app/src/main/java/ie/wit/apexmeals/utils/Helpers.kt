@@ -36,34 +36,12 @@ fun hideLoader(loader: AlertDialog) {
         loader.dismiss()
 }
 
-fun serviceUnavailableMessage(activity: FragmentActivity) {
-    Toast.makeText(
-        activity,
-        "Donation Service Unavailable. Try again later",
-        Toast.LENGTH_LONG
-    ).show()
-}
-
-fun serviceAvailableMessage(activity: FragmentActivity) {
-    Toast.makeText(
-        activity,
-        "Donation Contacted Successfully",
-        Toast.LENGTH_LONG
-    ).show()
-}
-
-fun customTransformation() : Transformation =
-    RoundedTransformationBuilder()
-        .borderColor(Color.WHITE)
-        .borderWidthDp(2F)
-        .cornerRadiusDp(35F)
-        .oval(false)
-        .build()
-
 fun showImagePicker(intentLauncher : ActivityResultLauncher<Intent>) {
+
     var chooseFile = Intent(Intent.ACTION_OPEN_DOCUMENT)
     chooseFile.type = "image/*"
     chooseFile = Intent.createChooser(chooseFile, R.string.select_profile_image.toString())
+    //chooseFile.flags = (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
     intentLauncher.launch(chooseFile)
 }
 
@@ -77,3 +55,11 @@ fun readImageUri(resultCode: Int, data: Intent?): Uri? {
     }
     return uri
 }
+
+fun customTransformation() : Transformation =
+    RoundedTransformationBuilder()
+        .borderColor(Color.WHITE)
+        .borderWidthDp(2F)
+        .cornerRadiusDp(35F)
+        .oval(false)
+        .build()

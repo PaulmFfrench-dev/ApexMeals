@@ -6,12 +6,12 @@
     app:startDestination="@id/reportFragment">
 
     <fragment
-        android:id="@+id/donateFragment"
-        android:name="ie.wit.apexmeals.ui.donate.DonateFragment"
+        android:id="@+id/apexmealdonateFragment"
+        android:name="ie.wit.apexmeals.ui.donate.ApexMealDonateFragment"
         android:label="@string/action_donate"
-        tools:layout="@layout/fragment_donate" >
+        tools:layout="@layout/fragment_apex_meal_donate" >
         <action
-            android:id="@+id/action_donateFragment_to_reportFragment"
+            android:id="@+id/action_apexmealdonateFragment_to_reportFragment"
             app:destination="@id/reportFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
@@ -22,13 +22,13 @@
         android:label="@string/action_report"
         tools:layout="@layout/fragment_report" >
         <action
-            android:id="@+id/action_reportFragment_to_donateFragment"
-            app:destination="@id/donateFragment"
+            android:id="@+id/action_reportFragment_to_apexmealdonateFragment"
+            app:destination="@id/apexmealdonateFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <action
-            android:id="@+id/action_reportFragment_to_donationDetailFragment"
-            app:destination="@id/donationDetailFragment" />
+            android:id="@+id/action_reportFragment_to_apexmealdonationDetailFragment"
+            app:destination="@id/apexmealdonationDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -36,12 +36,12 @@
         android:label="@string/action_about"
         tools:layout="@layout/fragment_about" />
     <fragment
-        android:id="@+id/donationDetailFragment"
-        android:name="ie.wit.apexmeals.ui.detail.DonationDetailFragment"
-        android:label="donation_detail_fragment"
-        tools:layout="@layout/fragment_donation_detail" >
+        android:id="@+id/apexmealdonationDetailFragment"
+        android:name="ie.wit.apexmeals.ui.detail.ApexMealDonationDetailFragment"
+        android:label="apex_meal_donation_detail_fragment"
+        tools:layout="@layout/fragment_apex_meal_donation_detail" >
         <action
-            android:id="@+id/action_donationDetailFragment_to_reportFragment"
+            android:id="@+id/action_apexmealdonationDetailFragment_to_reportFragment"
             app:destination="@id/reportFragment" />
         <argument
             android:name="apexmealid"
@@ -53,7 +53,7 @@
         android:label="ApexMeals Map"
         tools:layout="@layout/fragment_maps" >
         <action
-            android:id="@+id/action_mapsFragment_to_donationDetailFragment"
-            app:destination="@id/donationDetailFragment" />
+            android:id="@+id/action_mapsFragment_to_apexmealdonationDetailFragment"
+            app:destination="@id/apexmealdonationDetailFragment" />
     </fragment>
 </navigation>

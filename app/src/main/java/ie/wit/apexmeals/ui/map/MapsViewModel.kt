@@ -3,10 +3,14 @@ package ie.wit.apexmeals.ui.map
 import android.annotation.SuppressLint
 import android.app.Application
 import android.location.Location
+import android.location.Location.*
 import android.location.LocationRequest
 import android.os.Looper
+import android.os.SharedMemory.create
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.GoogleMap
 import ie.wit.apexmeals.firebase.FirebaseDBManager.create
 import timber.log.Timber
@@ -17,7 +21,6 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var map : GoogleMap
     var currentLocation = MutableLiveData<Location>()
     var locationClient : FusedLocationProviderClient
-
     val locationRequest = LocationRequest.create().apply {
         interval = 10000
         fastestInterval = 5000

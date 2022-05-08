@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.apexmeals.firebase.FirebaseDBManager
 import ie.wit.apexmeals.firebase.FirebaseImageManager
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.models.ApexMealModel
 
-class DonateViewModel : ViewModel() {
+class ApexMealDonateViewModel : ViewModel() {
 
     private val status = MutableLiveData<Boolean>()
 
@@ -16,10 +16,9 @@ class DonateViewModel : ViewModel() {
         get() = status
 
     fun addDonation(firebaseUser: MutableLiveData<FirebaseUser>,
-                    apexmeal: ApexMealsModel) {
-        apexmeal.profilepic = FirebaseImageManager.imageUri.value.toString()
+                    apexmeal: ApexMealModel) {
         status.value = try {
-            //DonationManager.create(donation)
+            apexmeal.profilepic = FirebaseImageManager.imageUri.value.toString()
             FirebaseDBManager.create(firebaseUser,apexmeal)
             true
         } catch (e: IllegalArgumentException) {

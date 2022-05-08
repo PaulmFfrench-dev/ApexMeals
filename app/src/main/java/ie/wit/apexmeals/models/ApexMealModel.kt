@@ -8,16 +8,17 @@ import kotlinx.android.parcel.Parcelize
 
 @IgnoreExtraProperties
 @Parcelize
-data class ApexMealsModel(
+data class ApexMealModel(
     var uid: String? = "",
     var paymentmethod: String = "N/A",
     var amount: Int = 0,
     var message: String = "Homer for President!",
     var upvotes: Int = 0,
     var profilepic: String = "",
+    var email: String? = "joe@bloggs.com",
     var latitude: Double = 0.0,
-    var longitude: Double = 0.0
-    var email: String? = "joe@bloggs.com")
+    var longitude: Double = 0.0)
+
     : Parcelable
 {
     @Exclude
@@ -29,8 +30,9 @@ data class ApexMealsModel(
             "message" to message,
             "upvotes" to upvotes,
             "profilepic" to profilepic,
-            "email" to email
-
+            "email" to email,
+            "latitude" to latitude,
+            "longitude" to longitude
         )
     }
 }

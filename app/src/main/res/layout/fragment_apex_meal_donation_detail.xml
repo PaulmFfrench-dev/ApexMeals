@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="donationvm"
-            type="ie.wit.apexmeals.ui.detail.DonationDetailViewModel" />
+            name="apexmealdonationvm"
+            type="ie.wit.apexmeals.ui.detail.ApexMealDonationDetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.detail.DonationDetailFragment">
+        tools:context=".ui.detail.ApexMealDonationDetailFragment">
 
         <TextView
             android:id="@+id/textView4"
@@ -54,7 +54,7 @@
             android:layout_marginEnd="4dp"
             android:textAlignment="viewStart"
             android:textSize="24sp"
-            android:text="@={donationvm.observableDonation.message}"
+            android:text="@={apexmealdonationvm.observableApexMeal.message}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editPaymenttype" />
 
@@ -64,7 +64,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="4dp"
-            android:text="@{donationvm.observableDonation.paymentmethod}"
+            android:text="@{apexmealdonationvm.observableApexMeal.paymentmethod}"
             android:textAlignment="viewStart"
             android:textColor="@color/color_primary"
             android:textSize="24sp"
@@ -80,7 +80,7 @@
             android:ems="10"
             android:inputType="number"
             android:textSize="24sp"
-            android:text="@={``+ donationvm.observableDonation.upvotes}"
+            android:text="@={``+ apexmealdonationvm.observableApexMeal.upvotes}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editMessage" />
 
@@ -94,7 +94,7 @@
             android:inputType="number"
             android:textAlignment="viewStart"
             android:textSize="24sp"
-            android:text="@={``+ donationvm.observableDonation.amount}"
+            android:text="@={``+ apexmealdonationvm.observableApexMeal.amount}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -129,23 +129,23 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Button
-            android:id="@+id/editDonationButton"
+            android:id="@+id/editApexMealDonationButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/update"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/deleteDonationButton"
+            app:layout_constraintEnd_toStartOf="@+id/deleteApexMealDonationButton"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/deleteDonationButton"
+            android:id="@+id/deleteApexMealDonationButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editDonationButton" />
+            app:layout_constraintStart_toEndOf="@+id/editApexMealDonationButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

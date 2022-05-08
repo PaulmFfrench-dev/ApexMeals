@@ -9,7 +9,6 @@ import android.view.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -18,7 +17,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import ie.wit.apexmeals.R
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.models.ApexMealModel
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.ui.report.ReportViewModel
 import ie.wit.apexmeals.utils.createLoader
@@ -46,11 +45,16 @@ class MapsFragment : Fragment() {
 
             reportViewModel.observableApexMealsList.observe(viewLifecycleOwner, Observer { apexmeals ->
                 apexmeals?.let {
-                    render(apexmeals as ArrayList<ApexMealsModel>)
+                    render(apexmeals as ArrayList<ApexMealModel>)
                     hideLoader(loader)
                 }
             })
         })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -69,7 +73,21 @@ class MapsFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
     }
 
-    private fun render(apexmealsList: ArrayList<ApexMealsModel>) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_map, menu)
+
+        val item = menu.findItem(R.id.toggleApexMealDonations) as MenuItem
+        item.setActionView(R.layout.togglebutton_layout)
+        val toggleApexMeals: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
+        toggleApexMeals.isChecked = false
+
+        toggleApexMeals.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) reportViewModel.loadAll()
+            else reportViewModel.load()
+        }
+    }
+
+    private fun render(apexmealsList: ArrayList<ApexMealModel>) {
         var markerColour: Float
         if (!apexmealsList.isEmpty()) {
             mapsViewModel.map.clear()
@@ -91,7 +109,7 @@ class MapsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        showLoader(loader, "Downloading Apex Meals")
+        showLoader(loader, "Downloading ApexMeals")
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
                 reportViewModel.liveFirebaseUser.value = firebaseUser
@@ -99,24 +117,4 @@ class MapsFragment : Fragment() {
             }
         })
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_map, menu)
-
-        val item = menu.findItem(R.id.toggleDonations) as MenuItem
-        item.setActionView(R.layout.togglebutton_layout)
-        val toggleDonations: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
-        toggleDonations.isChecked = false
-
-        toggleDonations.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) reportViewModel.loadAll()
-            else reportViewModel.load()
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
 }

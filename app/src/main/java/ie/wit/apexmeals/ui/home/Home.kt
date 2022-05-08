@@ -33,10 +33,7 @@ import ie.wit.apexmeals.firebase.FirebaseImageManager
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.ui.auth.Login
 import ie.wit.apexmeals.ui.map.MapsViewModel
-import ie.wit.apexmeals.utils.checkLocationPermissions
-import ie.wit.apexmeals.utils.customTransformation
-import ie.wit.apexmeals.utils.isPermissionGranted
-import ie.wit.apexmeals.utils.readImageUri
+import ie.wit.apexmeals.utils.*
 import timber.log.Timber
 
 class Home : AppCompatActivity() {
@@ -46,6 +43,7 @@ class Home : AppCompatActivity() {
     private lateinit var navHeaderBinding : NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
+    private lateinit var headerView : View
     private lateinit var intentLauncher : ActivityResultLauncher<Intent>
     private val mapsViewModel : MapsViewModel by viewModels()
 
@@ -62,14 +60,8 @@ class Home : AppCompatActivity() {
         findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        private lateinit var headerView : View
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        private fun initNavHeader() {
-            Timber.i("DX Init Nav Header")
-            headerView = homeBinding.navView.getHeaderView(0)
-            navHeaderBinding = NavHeaderBinding.bind(headerView)
-        }
 
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.donateFragment, R.id.reportFragment, R.id.mapsFragment, R.id.aboutFragment), drawerLayout)
@@ -77,39 +69,55 @@ class Home : AppCompatActivity() {
 
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
-        val wit = LatLng(52.245696, -7.139102)
-        googleMap.addMarker(MarkerOptions().position(wit).title("Marker in Waterford"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(wit, 14f))
-//        navController.addOnDestinationChangedListener { _, destination, arguments ->
-//            when(destination.id) {
-//                R.id.reportFragment -> {
-//                    val argument = NavArgument.Builder().setDefaultValue(totalDonated).build()
-//                    destination.addArgument("totalDonated", argument)
-//
-//                }
-//            }
-//        }
+
+        initNavHeader()
+
         if(checkLocationPermissions(this)) {
             mapsViewModel.updateCurrentLocation()
         }
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (isPermissionGranted(requestCode, grantResults))
+            mapsViewModel.updateCurrentLocation()
+        else {
+            // permissions denied, so use a default location
+            mapsViewModel.currentLocation.value = Location("Default").apply {
+                latitude = 52.245696
+                longitude = -7.139102
+            }
+        }
+        Timber.i("LOC : %s", mapsViewModel.currentLocation.value)
+    }
+
     public override fun onStart() {
         super.onStart()
         loggedInViewModel = ViewModelProvider(this).get(LoggedInViewModel::class.java)
-        loggedInViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
+        loggedInViewModel.liveFirebaseUser.observe(this, { firebaseUser ->
             if (firebaseUser != null) {
-                //val currentUser = loggedInViewModel.liveFirebaseUser.value
-                /*if (currentUser != null)*/ updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
+                updateNavHeader(firebaseUser)
             }
         })
 
-        loggedInViewModel.loggedOut.observe(this, Observer { loggedout ->
+        loggedInViewModel.loggedOut.observe(this, { loggedout ->
             if (loggedout) {
                 startActivity(Intent(this, Login::class.java))
             }
         })
 
+        registerImagePickerCallback()
+    }
+
+    private fun initNavHeader() {
+        Timber.i("DX Init Nav Header")
+        headerView = homeBinding.navView.getHeaderView(0)
+        navHeaderBinding = NavHeaderBinding.bind(headerView)
+
+        navHeaderBinding.navHeaderImage.setOnClickListener {
+            showImagePicker(intentLauncher)
+        }
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
@@ -129,7 +137,7 @@ class Home : AppCompatActivity() {
                     Timber.i("DX Loading Existing Default imageUri")
                     FirebaseImageManager.updateDefaultImage(
                         currentUser.uid,
-                        R.drawable.ic_launcher_homer,
+                        R.drawable.ic_launcher_apexmeals,
                         navHeaderBinding.navHeaderImage)
                 }
             }
@@ -176,20 +184,5 @@ class Home : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (isPermissionGranted(requestCode, grantResults))
-            mapsViewModel.updateCurrentLocation()
-        else {
-            // permissions denied, so use a default location
-            mapsViewModel.currentLocation.value = Location("Default").apply {
-                latitude = 52.245696
-                longitude = -7.139102
-            }
-        }
-        Timber.i("LOC : %s", mapsViewModel.currentLocation.value)
     }
 }

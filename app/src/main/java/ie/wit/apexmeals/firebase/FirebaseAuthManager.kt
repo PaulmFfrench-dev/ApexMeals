@@ -20,7 +20,50 @@ class FirebaseAuthManager(application: Application) {
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
     var loggedOut = MutableLiveData<Boolean>()
     var errorStatus = MutableLiveData<Boolean>()
+
     var googleSignInClient = MutableLiveData<GoogleSignInClient>()
+
+    init {
+        this.application = application
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        if (firebaseAuth!!.currentUser != null) {
+            liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
+            loggedOut.postValue(false)
+            errorStatus.postValue(false)
+            FirebaseImageManager.
+            checkStorageForExistingProfilePic(
+                firebaseAuth!!.currentUser!!.uid)
+        }
+        configureGoogleSignIn()
+
+    }
+
+    fun login(email: String?, password: String?) {
+        firebaseAuth!!.signInWithEmailAndPassword(email!!, password!!)
+            .addOnCompleteListener(application!!.mainExecutor) { task ->
+                if (task.isSuccessful) {
+                    liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
+                    errorStatus.postValue(false)
+                } else {
+                    Timber.i("Login Failure: $task.exception!!.message")
+                    errorStatus.postValue(true)
+                }
+            }
+    }
+
+    fun register(email: String?, password: String?) {
+        firebaseAuth!!.createUserWithEmailAndPassword(email!!, password!!)
+            .addOnCompleteListener(application!!.mainExecutor) { task ->
+                if (task.isSuccessful) {
+                    liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
+                    errorStatus.postValue(false)
+                } else {
+                    Timber.i("Registration Failure: $task.exception!!.message")
+                    errorStatus.postValue(true)
+                }
+            }
+    }
 
     private fun configureGoogleSignIn() {
 
@@ -32,18 +75,15 @@ class FirebaseAuthManager(application: Application) {
         googleSignInClient.value = GoogleSignIn.getClient(application!!.applicationContext,gso)
     }
 
-    init {
-        this.application = application
-        firebaseAuth = FirebaseAuth.getInstance()
+    fun logOut() {
 
-        if (firebaseAuth!!.currentUser != null) {
-            liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
-            loggedOut.postValue(false)
-            errorStatus.postValue(false)
-            FirebaseImageManager.checkStorageForExistingProfilePic(
-                firebaseAuth!!.currentUser!!.uid)
-        }
-        configureGoogleSignIn()
+        firebaseAuth!!.signOut()
+        Timber.i( "DonationX : firebaseAuth Signed out")
+        googleSignInClient.value!!.signOut()
+        Timber.i( "DonationX : googleSignInClient Signed out")
+        //FirebaseImageManager.imageUri = null!!
+        loggedOut.postValue(true)
+        errorStatus.postValue(false)
     }
 
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
@@ -61,39 +101,8 @@ class FirebaseAuthManager(application: Application) {
                     // If sign in fails, display a message to the user.
                     Timber.i( "signInWithCredential:failure $task.exception")
                     errorStatus.postValue(true)
+
                 }
             }
-    }
-
-    fun login(email: String?, password: String?) {
-        firebaseAuth!!.signInWithEmailAndPassword(email!!, password!!)
-            .addOnCompleteListener(application!!.mainExecutor, { task ->
-                if (task.isSuccessful) {
-                    liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
-                    errorStatus.postValue(false)
-                } else {
-                    Timber.i( "Login Failure: $task.exception!!.message")
-                    errorStatus.postValue(true)
-                }
-            })
-    }
-
-    fun register(email: String?, password: String?) {
-        firebaseAuth!!.createUserWithEmailAndPassword(email!!, password!!)
-            .addOnCompleteListener(application!!.mainExecutor, { task ->
-                if (task.isSuccessful) {
-                    liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
-                    errorStatus.postValue(false)
-                } else {
-                    Timber.i( "Registration Failure: $task.exception!!.message")
-                    errorStatus.postValue(true)
-                }
-            })
-    }
-
-    fun logOut() {
-        firebaseAuth!!.signOut()
-        loggedOut.postValue(true)
-        errorStatus.postValue(false)
     }
 }

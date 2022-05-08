@@ -9,17 +9,23 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import ie.wit.apexmeals.utils.customTransformation
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
-class FirebaseImageManager {
+object FirebaseImageManager {
+
     var storage = FirebaseStorage.getInstance().reference
     var imageUri = MutableLiveData<Uri>()
 
+    //1. checkStorageForExistingProfilePic
+    //2. if true - update imageuri else No File so add to storage
+    //3. If checkStorageForExistingProfilePic and Updating ProfilePic overwrite existing photo
+
     fun checkStorageForExistingProfilePic(userid: String) {
         val imageRef = storage.child("photos").child("${userid}.jpg")
-        val defaultImageRef = storage.child("homer.jpg")
+        //val defaultImageRef = storage.child("homer.jpg")
 
         imageRef.metadata.addOnSuccessListener { //File Exists
             imageRef.downloadUrl.addOnCompleteListener { task ->
@@ -48,6 +54,7 @@ class FirebaseImageManager {
                 uploadTask.addOnSuccessListener { ut ->
                     ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                         imageUri.value = task.result!!
+                        FirebaseDBManager.updateImageRef(userid,imageUri.value.toString())
                     }
                 }
             }
@@ -56,7 +63,6 @@ class FirebaseImageManager {
             uploadTask.addOnSuccessListener { ut ->
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
                     imageUri.value = task.result!!
-                    FirebaseDBManager.updateImageRef(userid,imageUri.value.toString())
                 }
             }
         }
@@ -82,7 +88,10 @@ class FirebaseImageManager {
                     Timber.i("DX onBitmapFailed $e")
                 }
 
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                    Timber.i("DX onPrepareLoad $placeHolderDrawable")
+                    //uploadImageToFirebase(userid, defaultImageUri.value,updating)
+                }
             })
     }
 
@@ -106,7 +115,10 @@ class FirebaseImageManager {
                     Timber.i("DX onBitmapFailed $e")
                 }
 
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                    Timber.i("DX onPrepareLoad $placeHolderDrawable")
+                    //uploadImageToFirebase(userid, defaultImageUri.value,updating)
+                }
             })
     }
 }

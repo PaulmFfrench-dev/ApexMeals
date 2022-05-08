@@ -7,7 +7,6 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -15,14 +14,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.apexmeals.R
-import ie.wit.apexmeals.adapters.ApexMealsClickListener
-import ie.wit.apexmeals.adapters.ApexMealsAdapter
+import ie.wit.apexmeals.adapters.ApexMealAdapter
+import ie.wit.apexmeals.adapters.ApexMealClickListener
 import ie.wit.apexmeals.databinding.FragmentReportBinding
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.models.ApexMealModel
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.utils.*
 
-class ReportFragment : Fragment(), ApexMealsClickListener {
+class ReportFragment : Fragment(), ApexMealClickListener {
 
     private var _fragBinding: FragmentReportBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -35,8 +34,9 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         _fragBinding = FragmentReportBinding.inflate(inflater, container, false)
         val root = fragBinding.root
@@ -44,14 +44,13 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
         fragBinding.fab.setOnClickListener {
-            val action = ReportFragmentDirections.actionReportFragmentToDonateFragment()
+            val action = ReportFragmentDirections.actionReportFragmentToApexmealdonateFragment()
             findNavController().navigate(action)
         }
-        showLoader(loader,"Downloading Donations")
-        reportViewModel.observableApexMealsList.observe(viewLifecycleOwner, Observer {
-                donations ->
-            donations?.let {
-                render(donations as ArrayList<ApexMealsModel>)
+        showLoader(loader, "Downloading ApexMeals")
+        reportViewModel.observableApexMealsList.observe(viewLifecycleOwner, Observer { apexmeals ->
+            apexmeals?.let {
+                render(apexmeals as ArrayList<ApexMealModel>)
                 hideLoader(loader)
                 checkSwipeRefresh()
             }
@@ -61,21 +60,22 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
         val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                showLoader(loader,"Deleting Donation")
-                val adapter = fragBinding.recyclerView.adapter as ApexMealsAdapter
+                showLoader(loader, "Deleting ApexMeal")
+                val adapter = fragBinding.recyclerView.adapter as ApexMealAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-                reportViewModel.delete(reportViewModel.liveFirebaseUser.value?.uid!!,
-                    (viewHolder.itemView.tag as ApexMealsModel).uid!!)
+                reportViewModel.delete(
+                    reportViewModel.liveFirebaseUser.value?.uid!!,
+                    (viewHolder.itemView.tag as ApexMealModel).uid!!
+                )
                 hideLoader(loader)
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
 
-
         val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                onApexMealClick(viewHolder.itemView.tag as ApexMealsModel)
+                onApexMealClick(viewHolder.itemView.tag as ApexMealModel)
             }
         }
         val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
@@ -87,12 +87,12 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_report, menu)
 
-        val item = menu.findItem(R.id.toggleDonations) as MenuItem
+        val item = menu.findItem(R.id.toggleApexMealDonations) as MenuItem
         item.setActionView(R.layout.togglebutton_layout)
-        val toggleDonations: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
-        toggleDonations.isChecked = false
+        val toggleApexMeals: SwitchCompat = item.actionView.findViewById(R.id.toggleButton)
+        toggleApexMeals.isChecked = false
 
-        toggleDonations.setOnCheckedChangeListener { buttonView, isChecked ->
+        toggleApexMeals.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) reportViewModel.loadAll()
             else reportViewModel.load()
         }
@@ -101,24 +101,27 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item,
-            requireView().findNavController()) || super.onOptionsItemSelected(item)
+        return NavigationUI.onNavDestinationSelected(
+            item,
+            requireView().findNavController()
+        ) || super.onOptionsItemSelected(item)
     }
 
-    private fun render(donationsList: ArrayList<ApexMealsModel>) {
-        fragBinding.recyclerView.adapter = ApexMealsAdapter(donationsList,this)
-        reportViewModel.readOnly.value!!
-        if (donationsList.isEmpty()) {
+    private fun render(apexmealsList: ArrayList<ApexMealModel>) {
+        fragBinding.recyclerView.adapter = ApexMealAdapter(apexmealsList, this,
+            reportViewModel.readOnly.value!!)
+        if (apexmealsList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
-            fragBinding.donationsNotFound.visibility = View.VISIBLE
+            fragBinding.apexmealdonationsNotFound.visibility = View.VISIBLE
         } else {
             fragBinding.recyclerView.visibility = View.VISIBLE
-            fragBinding.donationsNotFound.visibility = View.GONE
+            fragBinding.apexmealdonationsNotFound.visibility = View.GONE
         }
     }
 
-    override fun onApexMealClick(apexmeal: ApexMealsModel) {
-        val action = ReportFragmentDirections.actionReportFragmentToDonationDetailFragment(apexmeal.uid!!)
+    override fun onApexMealClick(apexmeal: ApexMealModel) {
+        val action = ReportFragmentDirections.actionReportFragmentToApexmealdonationDetailFragment(apexmeal.uid!!)
+
         if(!reportViewModel.readOnly.value!!)
             findNavController().navigate(action)
     }
@@ -126,7 +129,7 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
     private fun setSwipeRefresh() {
         fragBinding.swiperefresh.setOnRefreshListener {
             fragBinding.swiperefresh.isRefreshing = true
-            showLoader(loader,"Downloading Donations")
+            showLoader(loader, "Downloading ApexMeals")
             if(reportViewModel.readOnly.value!!)
                 reportViewModel.loadAll()
             else
@@ -141,19 +144,17 @@ class ReportFragment : Fragment(), ApexMealsClickListener {
 
     override fun onResume() {
         super.onResume()
-        showLoader(loader,"Downloading Donations")
+        showLoader(loader, "Downloading ApexMeals")
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
             if (firebaseUser != null) {
                 reportViewModel.liveFirebaseUser.value = firebaseUser
                 reportViewModel.load()
             }
         })
-        //hideLoader(loader)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
     }
-
 }

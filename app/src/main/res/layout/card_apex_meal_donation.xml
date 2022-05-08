@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="donation"
-            type="ie.wit.apexmeals.models.ApexMealsModel" />
+            name="apexmealdonation"
+            type="ie.wit.apexmeals.models.ApexMealModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -16,7 +16,7 @@
         android:elevation="24dp">
 
         <RelativeLayout
-            android:id="@+id/cardDonation"
+            android:id="@+id/cardApexMealDonation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
@@ -39,7 +39,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/imageIcon"
-                android:text="@{Integer.toString(donation.amount)}"
+                android:text="@{Integer.toString(apexmealdonation.amount)}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 tools:text="€1000" />
@@ -52,7 +52,7 @@
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="8dp"
                 android:layout_toEndOf="@+id/paymentamount"
-                android:text="@{donation.paymentmethod}"
+                android:text="@{apexmealdonation.paymentmethod}"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 tools:text="@string/paypal" />
@@ -77,7 +77,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/imageIcon"
-                android:text="@{donation.message}"
+                android:text="@{apexmealdonation.message}"
                 android:textColor="@color/color_primary"
                 tools:text="message" />
 

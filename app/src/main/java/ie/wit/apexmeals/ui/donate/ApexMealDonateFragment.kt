@@ -10,19 +10,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import ie.wit.apexmeals.R
-import ie.wit.apexmeals.databinding.FragmentDonateBinding
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.databinding.FragmentApexMealDonateBinding
+import ie.wit.apexmeals.models.ApexMealModel
 import ie.wit.apexmeals.ui.auth.LoggedInViewModel
 import ie.wit.apexmeals.ui.map.MapsViewModel
 import ie.wit.apexmeals.ui.report.ReportViewModel
 
-class DonateFragment : Fragment() {
+class ApexMealDonateFragment : Fragment() {
 
     var totalDonated = 0
-    private var _fragBinding: FragmentDonateBinding? = null
+    private var _fragBinding: FragmentApexMealDonateBinding? = null
     // This property is only valid between onCreateView and onDestroyView.
     private val fragBinding get() = _fragBinding!!
-    private lateinit var donateViewModel: DonateViewModel
+    private lateinit var apexmealdonateViewModel: ApexMealDonateViewModel
     private val reportViewModel: ReportViewModel by activityViewModels()
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     private val mapsViewModel: MapsViewModel by activityViewModels()
@@ -34,11 +34,11 @@ class DonateFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        _fragBinding = FragmentDonateBinding.inflate(inflater, container, false)
+        _fragBinding = FragmentApexMealDonateBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-        donateViewModel = ViewModelProvider(this).get(DonateViewModel::class.java)
-        donateViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
+        apexmealdonateViewModel = ViewModelProvider(this).get(ApexMealDonateViewModel::class.java)
+        apexmealdonateViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
                 status -> status?.let { render(status) }
         })
 
@@ -63,12 +63,12 @@ class DonateFragment : Fragment() {
                     //findNavController().popBackStack()
                 }
             }
-            false -> Toast.makeText(context,getString(R.string.donationError),Toast.LENGTH_LONG).show()
+            false -> Toast.makeText(context,getString(R.string.apexmealdonationError),Toast.LENGTH_LONG).show()
         }
     }
 
-    fun setButtonListener(layout: FragmentDonateBinding) {
-        layout.donateButton.setOnClickListener {
+    fun setButtonListener(layout: FragmentApexMealDonateBinding) {
+        layout.apexmealdonateButton.setOnClickListener {
             val amount = if (layout.paymentAmount.text.isNotEmpty())
                 layout.paymentAmount.text.toString().toInt() else layout.amountPicker.value
             if(totalDonated >= layout.progressBar.max)
@@ -78,8 +78,8 @@ class DonateFragment : Fragment() {
                 totalDonated += amount
                 layout.totalSoFar.text = String.format(getString(R.string.totalSoFar),totalDonated)
                 layout.progressBar.progress = totalDonated
-                donateViewModel.addDonation(loggedInViewModel.liveFirebaseUser,
-                    ApexMealsModel(paymentmethod = paymentmethod,amount = amount,
+                apexmealdonateViewModel.addDonation(loggedInViewModel.liveFirebaseUser,
+                    ApexMealModel(paymentmethod = paymentmethod,amount = amount,
                         email = loggedInViewModel.liveFirebaseUser.value?.email!!,
                         latitude = mapsViewModel.currentLocation.value!!.latitude,
                         longitude = mapsViewModel.currentLocation.value!!.longitude))
@@ -104,7 +104,7 @@ class DonateFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        totalDonated = reportViewModel.observableDonationsList.value!!.sumOf { it.amount }
+        totalDonated = reportViewModel.observableApexMealsList.value!!.sumOf { it.amount }
         fragBinding.progressBar.progress = totalDonated
         fragBinding.totalSoFar.text = String.format(getString(R.string.totalSoFar),totalDonated)
     }

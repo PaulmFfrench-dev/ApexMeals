@@ -5,12 +5,12 @@ import timber.log.Timber
 
 class ApexMealsApp : Application() {
 
-    //lateinit var apexmealsStore: ApexMealsStore
+    //lateinit var apexmealsStore: ApexMealStore
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-//        apexmealsStore = ApexMealsManager()
-        Timber.i("Apex Meals Application Started")
+        //  apexmealsStore = ApexMealManager()
+        Timber.i("Apex Meal Application Started")
     }
 }

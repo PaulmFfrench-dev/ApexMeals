@@ -37,8 +37,13 @@ class Login : AppCompatActivity() {
             createAccount(loginBinding.fieldEmail.text.toString(),
                 loginBinding.fieldPassword.text.toString())
         }
+
         loginBinding.googleSignInButton.setSize(SignInButton.SIZE_WIDE)
         loginBinding.googleSignInButton.setColorScheme(0)
+
+        loginBinding.googleSignInButton.setOnClickListener {
+            googleSignIn()
+        }
     }
 
     private fun googleSignIn() {
@@ -46,6 +51,22 @@ class Login : AppCompatActivity() {
             .googleSignInClient.value!!.signInIntent
 
         startForResult.launch(signInIntent)
+    }
+
+
+    public override fun onStart() {
+        super.onStart()
+
+        loginRegisterViewModel = ViewModelProvider(this).get(LoginRegisterViewModel::class.java)
+
+        loginRegisterViewModel.liveFirebaseUser.observe(this, Observer
+        { firebaseUser -> if (firebaseUser != null)
+            startActivity(Intent(this, Home::class.java)) })
+
+        loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
+        { status -> checkStatus(status) })
+
+        setupGoogleSignInCallback()
     }
 
     private fun setupGoogleSignInCallback() {
@@ -64,7 +85,7 @@ class Login : AppCompatActivity() {
                             Snackbar.make(loginBinding.loginLayout, "Authentication Failed.",
                                 Snackbar.LENGTH_SHORT).show()
                         }
-                        Timber.i("DonationX Google Result $result.data")
+                        Timber.i("Apex Meal Google Result $result.data")
                     }
                     RESULT_CANCELED -> {
 
@@ -73,22 +94,10 @@ class Login : AppCompatActivity() {
             }
     }
 
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        loginRegisterViewModel = ViewModelProvider(this).get(LoginRegisterViewModel::class.java)
-        loginRegisterViewModel.liveFirebaseUser.observe(this, Observer
-        { firebaseUser -> if (firebaseUser != null)
-            startActivity(Intent(this, Home::class.java)) })
-
-        loginRegisterViewModel.firebaseAuthManager.errorStatus.observe(this, Observer
-        { status -> checkStatus(status) })
-    }
-
     //Required to exit app from Login Screen - must investigate this further
     override fun onBackPressed() {
         super.onBackPressed()
-        Toast.makeText(this,"Click again to Close App...", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this,"Click again to Close App...",Toast.LENGTH_SHORT).show()
         finish()
     }
 

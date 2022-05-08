@@ -2,30 +2,27 @@ package ie.wit.apexmeals.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
-import ie.wit.apexmeals.R
-import ie.wit.apexmeals.databinding.CardDonationBinding
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.databinding.CardApexMealDonationBinding
+import ie.wit.apexmeals.models.ApexMealModel
 import ie.wit.apexmeals.utils.customTransformation
 
-interface ApexMealsClickListener {
-    fun onApexMealClick(apexmeal: ApexMealsModel)
+interface ApexMealClickListener {
+    fun onApexMealClick(apexmeal: ApexMealModel)
 }
 
-class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsModel>,
-                                  private val listener: ApexMealsClickListener,
+class ApexMealAdapter constructor(private var apexmeals: ArrayList<ApexMealModel>,
+                                  private val listener: ApexMealClickListener,
                                   private val readOnly: Boolean)
-    : RecyclerView.Adapter<ApexMealsAdapter.MainHolder>() {
+    : RecyclerView.Adapter<ApexMealAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardDonationBinding
+        val binding = CardApexMealDonationBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        Picasso.get().load(apexmeals.profilepic.toUri())
-            .resize(200, 200)
-            .transform(customTransformation())
-            .centerCrop()
-            .into(binding.imageIcon)
+
         return MainHolder(binding,readOnly)
     }
 
@@ -41,15 +38,21 @@ class ApexMealsAdapter constructor(private var apexmeals: ArrayList<ApexMealsMod
 
     override fun getItemCount(): Int = apexmeals.size
 
-    inner class MainHolder(val binding : CardDonationBinding, private val readOnly : Boolean) :
+    inner class MainHolder(val binding : CardApexMealDonationBinding, private val readOnly : Boolean) :
         RecyclerView.ViewHolder(binding.root) {
 
         val readOnlyRow = readOnly
 
-        fun bind(apexmeal: ApexMealsModel, listener: ApexMealsClickListener) {
+        fun bind(apexmeal: ApexMealModel, listener: ApexMealClickListener) {
             binding.root.tag = apexmeal
-            binding.donation = apexmeal
-            binding.imageIcon.setImageResource(R.mipmap.ic_launcher_round)
+            binding.apexmealdonation = apexmeal
+
+            Picasso.get().load(apexmeal.profilepic.toUri())
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onApexMealClick(apexmeal) }
             binding.executePendingBindings()
         }

@@ -4,32 +4,32 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ie.wit.apexmeals.firebase.FirebaseDBManager
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.models.ApexMealModel
 import timber.log.Timber
 import java.lang.Exception
 
-class DonationDetailViewModel : ViewModel() {
-    private val apexmeal = MutableLiveData<ApexMealsModel>()
+class ApexMealDonationDetailViewModel : ViewModel() {
+    private val apexmeal = MutableLiveData<ApexMealModel>()
 
-    var observableDonation: LiveData<ApexMealsModel>
+    var observableApexMeal: LiveData<ApexMealModel>
         get() = apexmeal
         set(value) {apexmeal.value = value.value}
 
-    fun getDonation(userid:String, id: String) {
+    fun getApexMeal(userid:String, id: String) {
         try {
-            //DonationManager.findById(email, id, donation)
+            //DonationManager.findById(email, id, apexmeal)
             FirebaseDBManager.findById(userid, id, apexmeal)
-            Timber.i("Detail getDonation() Success : ${
+            Timber.i("Detail getApexMeal() Success : ${
                 apexmeal.value.toString()}")
         }
         catch (e: Exception) {
-            Timber.i("Detail getDonation() Error : $e.message")
+            Timber.i("Detail getApexMeal() Error : $e.message")
         }
     }
 
-    fun updateDonation(userid:String, id: String,apexmeal: ApexMealsModel) {
+    fun updateApexMeal(userid:String, id: String,apexmeal: ApexMealModel) {
         try {
-            //DonationManager.update(email, id, donation)
+            //DonationManager.update(email, id, apexmeal)
             FirebaseDBManager.update(userid, id, apexmeal)
             Timber.i("Detail update() Success : $apexmeal")
         }

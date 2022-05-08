@@ -5,26 +5,29 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.wit.apexmeals.firebase.FirebaseDBManager
-import ie.wit.apexmeals.models.ApexMealsModel
+import ie.wit.apexmeals.models.ApexMealModel
 import timber.log.Timber
 import java.lang.Exception
 
 class ReportViewModel : ViewModel() {
 
     private val apexmealsList =
-        MutableLiveData<List<ApexMealsModel>>()
+        MutableLiveData<List<ApexMealModel>>()
 
-    val observableApexMealsList: LiveData<List<ApexMealsModel>>
+    val observableApexMealsList: LiveData<List<ApexMealModel>>
         get() = apexmealsList
 
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
+
     var readOnly = MutableLiveData(false)
+
+    var searchResults = ArrayList<ApexMealModel>()
 
     init { load() }
 
     fun load() {
         try {
-            //DonationManager.findAll(liveFirebaseUser.value?.email!!, donationsList)
+            readOnly.value = false
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,
                 apexmealsList)
             Timber.i("Report Load Success : ${apexmealsList.value.toString()}")
@@ -32,7 +35,6 @@ class ReportViewModel : ViewModel() {
         catch (e: Exception) {
             Timber.i("Report Load Error : $e.message")
         }
-        readOnly.value = false
     }
 
     fun loadAll() {
@@ -48,7 +50,6 @@ class ReportViewModel : ViewModel() {
 
     fun delete(userid: String, id: String) {
         try {
-            //DonationManager.delete(userid,id)
             FirebaseDBManager.delete(userid,id)
             Timber.i("Report Delete Success")
         }
